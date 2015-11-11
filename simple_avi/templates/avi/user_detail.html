@@ -1,0 +1,17 @@
+{% if request.session.user_profile %}
+    <h3>User details:</h3>
+    <dl class="dl-horizontal">
+        <dt>Username</dt>
+        <dd>{{request.session.user_profile.username}}</dd>
+        <dt>Roles</dt>
+        <dd>
+            {% for r in request.session.user_profile.roles %}
+                {% if r %}
+                    <span class="label label-info">{{r}}</span>
+                {% endif %}
+            {% endfor %}
+        </dd>
+    </dl>
+{% else %}
+    <p class="text-danger">Session token data missing</p>
+{% endif %}
