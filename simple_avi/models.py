@@ -1,12 +1,18 @@
+"""
+GAVIP Example AVIS: Simple AVI
+
+Django models used by the AVI pipeline
+"""
+
 from django.db import models
 from pipeline.models import AviJob
 
 
 class DemoModel(AviJob):
     """
-    This model is used to store the parameters for our pipeline.
-    Notice that we have identical variable names here as is in
-    the pipline itself.
+    This model is used to store the parameters for the AVI pipeline.
+    Notice that it contains identical field names here as is the variables in
+    the pipeline itself.
 
     An AviJob model must contain all fields required by the intended
     pipeline class (ProcessData) in this case.

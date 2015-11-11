@@ -1,30 +1,18 @@
 {% extends "base/base.html" %}
 
+{% block avi_title %}
+GAVIP Example AVIs: Simple AVI
+{% endblock avi_title %}
+
 {% block avi_content %}
+{% load staticfiles %}
+
 <div class="container-fluid">
-  <div class="jumbotron">
-    
-    <div class="row">
-      <div class="col-md-4">
-        <h1>AVI demo <small>V0.3</small></h1>
-	    </div>
-    
-      <div class="col-md-8 well">
-        <h2>View the guide <a href='http://docs.gavip.science/AVI_guide.html' target='_'>here</a></h2>
-  	  	<p>This AVI demonstrates the following:</p>
-  	  	<ul>
-    		  <li>AVI service usage</li>
-    		  <li>Job queuing</li>
-    		  <li>Pipelines</li>
-		    </ul>
-      </div>
-    </div>
-    
-  </div>
+  {% include "avi/avi_header.html" %}
 
   <div class="row collapse in" id="start_form">
     <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
-      <h2>Get started!</h2>
+      <h2>Get started:</h2>
 
       <form id="dbquery_form" action="{% url 'avi:run_query' %}" method="POST"> {% csrf_token %}
         <div class="form-group">
@@ -36,6 +24,7 @@
             value="SampleFile_{{millis}}.out">
         </div>
         <button type="submit" class="btn btn-default">Begin pipeline</button>
+        <p/>
       </form>
     </div>
   </div>

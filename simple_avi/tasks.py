@@ -1,3 +1,13 @@
+"""
+GAVIP Example AVIS: Simple AVI
+
+An example AVI pipeline is defined here, consisting of three tasks:
+
+- DummyTask - demonstrates dependencies, but does nothing
+- DownloadData - uses services.gacs.GacsQuery to run ADQL queries in GACS(-dev)
+- ProcessData - generates a simple scatter plot with Bokeh from the downloaded data
+"""
+
 import os
 import time
 from django.conf import settings
@@ -8,8 +18,8 @@ from pipeline.classes import (
     AviParameter, AviLocalTarget,
 )
 
-# CONNECTOR Library used for getting GACS data
-from connectors import tapquery
+# Service enabling ADQL queries to be run in GACS(-dev)
+# Queries are run asynchronously, but the service is restricted to anonymous users until ESAC CAS integration is possible.
 import services.gacs as svc_gacs
 
 # Library used for VOTable parsing

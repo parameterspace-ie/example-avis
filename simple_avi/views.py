@@ -1,11 +1,13 @@
 """
+GAVIP Example AVIS: Simple AVI
+
 @req: SOW-FUN-010
 @req: SOW-FUN-040
 @req: SOW-FUN-046
 @req: SOW-INT-001
 @comp: AVI Web System
 
-This is a sample AVI which demonstrates usage of the AVI framework
+This is a simple example AVI which demonstrates usage of the GAVIP AVI framework
 
 Here in views.py, you can define any type of functions to handle 
 HTTP requests. Any of these functions can be used to create an 
@@ -29,22 +31,25 @@ from avi.models import DemoModel
 
 logger = logging.getLogger(__name__)
 
+def get_default_context():
+    """
+    'millis' is used to populate an output file name parameter
+    'standalone' is used to show a convenient toolbar for users
+    """ 
+    return {
+        "millis": int(round(time.time() * 1000)),
+        "standalone": settings.STANDALONE # STANDALONE will be true in this case
+    }
+
 
 @require_http_methods(["GET"])
 def index(request):
     """
-    This view is the first view that the user sees!
-    We send a dictionary called a context, which contains a 
+    This view is the first view that the user sees
+    We send a dictionary called a context, which contains 
     'millis' and 'standalone' variables.
-
-    'millis' is used to populate an output file name parameter
-    'standalone' is used to show a convenient toolbar for users 
     """
-    context = {
-        "millis": int(round(time.time() * 1000)),
-        "standalone": settings.STANDALONE
-    }
-    return render(request, 'avi/index.html', context=context)
+    return render(request, 'avi/index.html', context=get_default_context())
 
 
 @require_http_methods(["POST"])
@@ -86,7 +91,9 @@ def job_detail(request, job_id):
     This view is used to show a job progress window using a job ID
     """
     job = get_object_or_404(DemoModel, request_id=job_id)
-    return render(request, 'avi/job_progress.html', {'job': job})
+    context=get_default_context()
+    context['job'] = job
+    return render(request, 'avi/job_progress.html', context=context)
 
 
 @require_http_methods(["GET"])
@@ -116,14 +123,14 @@ def job_summary(request, job_id):
     # include the URL for the final job
     result_url = reverse('avi:job_result',
                          kwargs={'job_id': job_id})
-    context = {
+    context = get_default_context()
+    context.update({
         'resultURL': result_url,
         'filePath': file_path,
         'fileSize': file_size,
         'fileModTime': file_mod_time
-    }
-    return render(request, 'avi/job_summary.html',
-                  context=context)
+    })
+    return render(request, 'avi/job_summary.html', context=context)
 
 
 @require_http_methods(["GET"])
@@ -134,7 +141,9 @@ def job_result(request, job_id):
     file_path = os.path.join(settings.OUTPUT_PATH, job.outputFile)
     with open(file_path, 'r') as outFile:
         file_content = outFile.read()
-    return render(request, 'avi/job_result.html', {'bokehPlot': file_content})
+    context=get_default_context()
+    context['bokehPlot'] = file_content
+    return render(request, 'avi/job_result.html', context=context)
 
 
 @require_http_methods(["GET"])

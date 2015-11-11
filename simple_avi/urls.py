@@ -1,4 +1,6 @@
 """
+GAVIP Example AVIS: Simple AVI
+
 These URLs are used by the AVI web-interface.
 """
 from django.conf.urls import patterns, url
@@ -7,8 +9,6 @@ from avi import views
 urlpatterns = patterns(
     '',
     url(r'^$', views.index, name='index'),
-    # TODO: Check Django convention for using name of post in
-    # "name" or "url" w.r.t duplication of var
     url(r'^run_query/$',
         views.run_query, name='run_query'),
     
