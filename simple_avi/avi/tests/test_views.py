@@ -25,8 +25,7 @@ class ModelAVIViewsTestcase(TestCase):
 		self.assertTemplateUsed(response, 'base/devheader.html')
 		self.assertTemplateUsed(response, 'avi/user_detail.html')
 
-		self.assertIn('AVI demo <small>V0.3</small>', response.content)
-		self.assertIn('Get started!', response.content)
+		self.assertIn('Simple AVI', response.content)
 		self.assertIn('SampleFile_%s.out' %response.context['millis'], response.content)
 		self.assertIn('Standalone: %s' %response.context['standalone'], response.content)
 
@@ -145,7 +144,7 @@ class ModelAVIViewsTestcase(TestCase):
 		#self.assertIn('%s' %job.request.pipeline_state.state, response.content)
 		self.assertIn('%s' %job.request_id, response.content)
 
-	def test_job_detail_page_recieves_expected_context(self):
+	def test_job_status_page_recieves_expected_context(self):
 		job = DemoModel.objects.create( 
 			query='query', 
 			outputFile='outputfile', 
@@ -159,7 +158,7 @@ class ModelAVIViewsTestcase(TestCase):
 		response = self.client.get(reverse('avi:job_status', args=(job.id,)))
 		self.assertEqual(None, response.context)
 
-	def test_job_detail_page_returns_expected_content(self):
+	def test_job_status_page_returns_expected_content(self):
 		job = DemoModel.objects.create( 
 			query='query', 
 			outputFile='outputfile', 
