@@ -1,11 +1,11 @@
 <div class="panel panel-info">
   <div class="panel-heading">
-    Result view help
+    <h4>Ulysses Results</h4>
   </div>
   <div class="panel-body">
       <p>This is a panel which renders one of the job results.</p>
 
-      <p>Select an area of the plot to zoom in on it.</p>
+      <p>Select an area of the plot to zoom in on it. TODO</p>
 
       <ul>
         <li> The data is rendered using highcharts.</li>
@@ -13,15 +13,109 @@
         <li>When a result is accessed, javascript makes a call to an AVI endpoint which returns the JSON data for a particular job. </li>
         <li>This data is then dynamically loaded in to the highchart object.</li>
       </ul>
+  </div>
+</div>
 
-      <strong>TODO:</strong> <p>Figure out the damn units here</p>
+{% load staticfiles %}
+<!--script src="http://code.highcharts.com/highcharts.js"></script-->
+<script src="http://code.highcharts.com/3.0.7/highcharts.js"></script>
+<!--script src="http://code.highcharts.com/modules/exporting.js"></script-->
+<script src="http://code.highcharts.com/3.0.7/modules/exporting.js"></script>
+
+<div class="panel panel-info">
+  <div class="panel-heading">
+  TODO - include original form with read-only fields
+  </div>
+  <div class="panel-body">
+    {{ dfdescription|safe }}
+    
+    <div id="bprprvs-chart"></div>
+    <script type="text/javascript">
+        new Highcharts.Chart({{bprprvs_chart|safe}});
+    </script>
+    <div id="gbpgrp-chart"></div>
+    <script type="text/javascript">
+    chart = new Highcharts.Chart({
+        chart: {
+            type: 'scatter',
+            zoomType: 'xy',
+            
+            renderTo: 'gbpgrp-chart',
+            events: {
+                //load: data_loader
+            }
+        },
+        title: {
+            text: 'Noise Free Spectra - GBP and GRP'
+        },
+        subtitle: {
+            text: ''
+        },
+        xAxis: {
+            title: {
+                enabled: true,
+                text: 'GBP'
+            },
+            startOnTick: true,
+            endOnTick: true,
+            showLastLabel: true
+        },
+        yAxis: {
+            startOnTick: true,
+//            type: 'logarithmic',
+            title: {
+                text: 'GRP'
+            }
+        },
+        exporting: {
+            enabled: true
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'left',
+            verticalAlign: 'top',
+            x: 100,
+            y: 70,
+            floating: true,
+            backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF',
+            borderWidth: 1
+        },
+        plotOptions: {
+            scatter: {
+                marker: {
+                    radius: 3,
+                    states: {
+                        hover: {
+                            enabled: true,
+                            lineColor: 'rgb(100,100,100)'
+                        }
+                    }
+                },
+                states: {
+                    hover: {
+                        marker: {
+                            enabled: false
+                        }
+                    }
+                },
+                tooltip: {
+                    pointFormat: '{point.x} GBP, {point.y} GRP'
+                }
+            }
+        },series: [{
+            name: 'Noise Free Spectra',
+            showInLegend: false,
+            color: 'rgba(223, 83, 83, .5)',
+            data: {{ bprp_data }}
+        }]
+    });  
+    
+    </script>
   </div>
 </div>
 
 <div id="container">
 </div>
 
-{% load staticfiles %}
-<script src="http://code.highcharts.com/highcharts.js"></script>
-<script src="http://code.highcharts.com/modules/exporting.js"></script>
+
 <script src="{% static 'avi/js/panel_result.js' %}"></script>

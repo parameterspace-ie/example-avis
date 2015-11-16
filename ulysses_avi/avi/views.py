@@ -14,8 +14,6 @@ from pipeline import manager
 from avi.forms import NoisySpectraJobForm
 from avi.models import NoisySpectraJob
 
-from avi.tasks import ProcessUlyssesOutput
-
 logger = logging.getLogger(__name__)
 
 
@@ -45,7 +43,7 @@ def index(request):
         if form.is_valid():
             job_model = form.instance
             
-        job_task = manager.create_avi_job_task(request, job_model, ProcessUlyssesOutput.__name__)
+        job_task = manager.create_avi_job_task(request, job_model, 'AnalyseUlyssesOutput')
         # Start the pipeline
         manager.start_avi_job(job_task.job_id)
 
@@ -94,8 +92,11 @@ def job_data(request, job_id):
     file_path = manager.get_pipeline_status(job_id)['result']
     with open(file_path, 'r') as out_file:
         analysis_context = json.load(out_file)
-    return JsonResponse(analysis_context)
-#     return render(request, 'avi/job_result.html', {'analysis': analysis_context})
+    analysis_context['testfield'] = 'TEST'
+    logger.info('analysis_context XXX: %s' % (analysis_context))
+#     return JsonResponse(analysis_context)
+    return render(request, 'avi/index.html', context=analysis_context)
+#     return redirect('%s#result-tab' % resolve_url('avi:index'))
 
 
 @require_http_methods(["GET"])

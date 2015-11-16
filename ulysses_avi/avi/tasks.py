@@ -10,16 +10,11 @@ This AVI demonstrates the following:
 import hashlib
 import json
 import logging
-from lxml import etree
-import math
 import matplotlib
 # Run without UI
 matplotlib.use('Agg')
-import matplotlib.pyplot as plt
-import numpy as np
 import os
-from pylab import rcParams
-import seaborn as sns
+import pandas as pd
 import shlex
 import subprocess
 
@@ -78,7 +73,7 @@ class RunUlysses(AviTask):
             logger.info(line.strip())
         
 
-class ProcessUlyssesOutput(AviTask):
+class AnalyseUlyssesOutput(AviTask):
     """
     TODO
     """
@@ -91,7 +86,7 @@ class ProcessUlyssesOutput(AviTask):
     conversion = AviParameter()
 
     def __init__(self, *args, **kwargs):
-        super(ProcessUlyssesOutput, self).__init__(*args, **kwargs)
+        super(AnalyseUlyssesOutput, self).__init__(*args, **kwargs)
         param_values = '%s_%s_%d_%.2f_%d_%d_%d' % (self.spectra_input,
                                                    self.wavelength_input,
                                                    self.num_noisy_spectra,
@@ -132,3 +127,15 @@ class ProcessUlyssesOutput(AviTask):
         """
         logger.info('ProcessUlyssesOutput, input directory: %s' % self.input().path)
         
+        df = pd.read_csv(os.path.join(self.input().path, 'Ulysses_GaiaBPRP_noiseFreeSpectra.txt'), skiprows=8, sep='|')
+        logger.info(df.describe())
+        
+        analysis_context = {}
+        analysis_context['dfdescription'] = df.describe().to_html(classes='table table-striped table-bordered table-hover')
+
+        analysis_context['bprp_data'] = df[[' GBP ', ' GRP ' ]].values.tolist()
+        logger.info(analysis_context)
+        # JSON will be the context used for the template
+        with open(self.output().path, 'wb') as out:
+            json.dump(analysis_context, out)
+
