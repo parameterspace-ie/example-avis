@@ -1,0 +1,109 @@
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <h4>GACS-Dev IGSL Results</h4>
+  </div>
+  <div class="panel-body">
+      <p>This panel renders one of the GACS-Dev IGSL job results.</p>
+
+      <ul>
+        <li>The pipeline is intended to provide a demonstration of the types of libraries that are available to AVI developers within the container image. 
+        It currently:
+        <ul>
+          <li>Retrieves the source data from GACS-dev using the GACS service provided by the GAVIP AVI framework.</li>
+          <li>Converts the resulting table into a pandas DataFrame (<a href="http://www.astropy.org/">astropy</a>, <a href="http://pandas.pydata.org/">pandas</a>).</li>
+          <li>Clusters the sources based on their magnitude fields, using K-Means with k=4 (<a href="http://scikit-learn.org/stable/">scikit-learn</a>).</li>
+          <li>Outputs a JSON object containing the magnitude fields for a sample of sources, and their cluster memberships.</li>
+        </ul>
+        <li>The sampled sources are rendered using highcharts, coloured by cluster membership.</li>
+      </ul>
+  </div>
+</div>
+
+{% load staticfiles %}
+
+{% load avi_filters %}
+
+<div class="panel panel-info">
+  <div class="panel-heading">
+  Analysis of IGSL Magnitude Values
+  </div>
+  <div class="panel-body">
+    {{ gacs_dfdescription|safe }}
+    
+    <div id="gacskmeans-chart"></div>
+    <script type="text/javascript">
+    chart = new Highcharts.Chart({
+        chart: {
+            type: 'scatter',
+            zoomType: 'xy',
+            
+            renderTo: 'gacskmeans-chart',
+            events: {
+                //load: data_loader
+            }
+        },
+        title: {
+            text: 'K-Means Clusters (K=4)'
+        },
+        subtitle: {
+            text: ''
+        },
+        xAxis: {
+            title: {
+                enabled: true,
+                text: 'mag_b_j'
+            },
+            startOnTick: true,
+            endOnTick: true,
+            showLastLabel: true
+        },
+        yAxis: {
+            startOnTick: true,
+//            type: 'logarithmic',
+            title: {
+                text: 'mag_g'
+            }
+        },
+        exporting: {
+            enabled: true
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'left',
+            verticalAlign: 'top',
+            x: 100,
+            y: 70,
+            floating: true,
+            backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF',
+            borderWidth: 1
+        },
+        plotOptions: {
+            scatter: {
+                marker: {
+                    radius: 3,
+                    states: {
+                        hover: {
+                            enabled: true,
+                            lineColor: 'rgb(100,100,100)'
+                        }
+                    }
+                },
+                states: {
+                    hover: {
+                        marker: {
+                            enabled: false
+                        }
+                    }
+                },
+                tooltip: {
+                    pointFormat: '{point.x} mag_b_j, {point.y} mag_g'
+                }
+            }
+        },series: {% if gacs_hc_series %} {{ gacs_hc_series|as_json }} {% else %} [] {% endif %}
+    });  
+    
+    </script>
+  </div>
+</div>
+
+

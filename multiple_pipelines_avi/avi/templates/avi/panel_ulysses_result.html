@@ -1,0 +1,114 @@
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <h4>Ulysses Results</h4>
+  </div>
+  <div class="panel-body">
+      <p>This panel renders one of the Ulysses job results.</p>
+
+      <ul>
+        <li>The pipeline is intended to provide a demonstration of how (DPAC) tools written in Java may be called from AVI pipelines. 
+        It currently:
+        <ul>
+          <li>Runs Ulysses using parameters similar to an example provided in its README file.</li>
+          <li>Converts one of the output files into a pandas DataFrame (<a href="http://pandas.pydata.org/">pandas</a>).</li>
+          <li>Outputs a JSON object containing the simulated values.</li>
+        </ul>
+        <li>A plot of GBP and GRP is rendered using highcharts.</li>
+      </ul>
+  </div>
+</div>
+
+{% load staticfiles %}
+
+{% load avi_filters %}
+
+<div class="panel panel-info">
+  <div class="panel-heading">
+  Noise Free Spectra Analysis
+  </div>
+  <div class="panel-body">
+    {{ ulysses_dfdescription|safe }}
+    
+    <div id="ulysses_gbpgrp-chart"></div>
+    <script type="text/javascript">
+    chart = new Highcharts.Chart({
+        chart: {
+            type: 'scatter',
+            zoomType: 'xy',
+            
+            renderTo: 'ulysses_gbpgrp-chart',
+            events: {
+                //load: data_loader
+            }
+        },
+        title: {
+            text: 'Noise Free Spectra - GBP and GRP'
+        },
+        subtitle: {
+            text: ''
+        },
+        xAxis: {
+            title: {
+                enabled: true,
+                text: 'GBP'
+            },
+            startOnTick: true,
+            endOnTick: true,
+            showLastLabel: true
+        },
+        yAxis: {
+            startOnTick: true,
+//            type: 'logarithmic',
+            title: {
+                text: 'GRP'
+            }
+        },
+        exporting: {
+            enabled: true
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'left',
+            verticalAlign: 'top',
+            x: 100,
+            y: 70,
+            floating: true,
+            backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF',
+            borderWidth: 1
+        },
+        plotOptions: {
+            scatter: {
+                marker: {
+                    radius: 3,
+                    states: {
+                        hover: {
+                            enabled: true,
+                            lineColor: 'rgb(100,100,100)'
+                        }
+                    }
+                },
+                states: {
+                    hover: {
+                        marker: {
+                            enabled: false
+                        }
+                    }
+                },
+                tooltip: {
+                    pointFormat: '{point.x} GBP, {point.y} GRP'
+                }
+            }
+        },series: {% if ulysses_hc_series %} {{ ulysses_hc_series|as_json }} {% else %} [] {% endif %}
+//                [{
+//            name: 'Noise Free Spectra',
+//            showInLegend: false,
+//            color: 'rgba(223, 83, 83, .5)',
+//            data: {{ bprp_data }}
+//        }]
+    });  
+    
+    </script>
+  </div>
+</div>
+
+
