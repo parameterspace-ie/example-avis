@@ -10,7 +10,6 @@ An example AVI pipeline is defined here, consisting of three tasks:
 
 import os
 import time
-import json
 from django.conf import settings
 
 # Class used for creating pipeline tasks
@@ -25,6 +24,10 @@ import services.gacs as svc_gacs
 
 # Library used for VOTable parsing
 from astropy.io.votable import parse
+# Libraries used for Bokeh plotting
+from bokeh.resources import INLINE
+from bokeh.plotting import figure
+from bokeh.embed import file_html
 
 
 class DummyTask(AviTask):
@@ -90,9 +93,23 @@ class ProcessData(AviTask):
         # Extract plot data
         mass = data_arr['mass']
         orbit_period = data_arr['orbit_period']
-        
-        # highcharts_data = zip(list_a, list_b)
-        highcharts_data = {"data": map(lambda x,y:[x,y], mass, orbit_period)}
-
+        # Create the bokeh plot
+        p = figure(title="GACS scatter",
+                   plot_width=600, plot_height=600
+                   )
+        p.scatter(mass, orbit_period,
+                  size=3,
+                  fill_alpha=0.5,
+                  line_color="#6666ee",
+                  fill_color="#ee6666",
+                  )
+        # Style the bokeh plot
+        p.title_text_color = "green"
+        p.title_text_font = "times"
+        p.xaxis.axis_label = 'Solar Mass'
+        p.yaxis.axis_label = 'Orbital Period'
+        # Generate the HTML content and write it to the output file for this
+        # task
+        html = file_html(p, INLINE, "my plot")
         with open(self.output().path, 'w') as out:
-            json.dump(highcharts_data, out)
+            out.write(html)

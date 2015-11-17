@@ -8,17 +8,19 @@ from avi import views
 
 urlpatterns = patterns(
     '',
-    url(r'^$', views.main, name='main'),
-
+    url(r'^$', views.index, name='index'),
     url(r'^run_query/$',
         views.run_query, name='run_query'),
     
-    url(r'^job_list/$',
-        views.job_list, name='job_list'),
+    url(r'^job/(?P<job_id>[0-9]+)/$',
+        views.job_detail, name='job_page'),
     
-    url(r'^job_data/(?P<job_id>[0-9]+)/$',
-        views.job_data, name='job_data'),
-
+    url(r'^status/(?P<job_id>[0-9]+)/$',
+        views.job_status, name='job_status'),
+    
+    url(r'^job_summary/(?P<job_id>[0-9]+)/$',
+        views.job_summary, name='job_summary'),
+    
     url(r'^result/(?P<job_id>[0-9]+)/$',
         views.job_result, name='job_result'),
     
