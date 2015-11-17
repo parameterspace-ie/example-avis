@@ -1,10 +1,12 @@
-"""
-All forms for the avi app
-"""
+'''
+GAVIP Example AVIS: Multiple Pipeline AVI
+
+Forms for the pipeline job models
+'''
 
 from django.forms import ModelForm
 
-from avi.models import NoisySpectraJob
+from avi.models import GacsIgslAnalysisJob, NoisySpectraJob
 
 
 class NoisySpectraJobForm(ModelForm):
@@ -16,4 +18,13 @@ class NoisySpectraJobForm(ModelForm):
         model = NoisySpectraJob
         exclude = ['request']
         
+
+class GacsIgslAnalysisJobForm(ModelForm):
+    """
+    Form used to start GACS-dev IGSL jobs
+    
+    """
+    class Meta:
+        model = GacsIgslAnalysisJob
+        exclude = ['request']
         

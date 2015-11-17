@@ -3,28 +3,20 @@
     <h4>Running Ulysses</h4>
   </div>
   <div class="panel-body">
-    Enter the required parameters - this is an example from the Ulysses README TODO...
+    This pipeline runs the <a href="http://wiki.cosmos.esa.int/gaia-dpac/index.php/CU8:_Ulysses">CU8 Ulysses BP/RP Simulator</a>, based on the following example
+    found in its README file:
+    <p>
+    <pre>$ java -jar dist/ulysses.jar -f "data/input/marcs/*LR.spectra" -w data/input/wavelengthLR.dat -n 1 -G 17 -A 1 -oversamp 1 -conversion 2</pre>
+    </p> 
   </div>
 </div>
 
-<!-- form id="dbquery_form" method="POST"> {% csrf_token %}
-    <div class="form-group">
-        <label for="query">GACS-Dev VOTable query</label>
-        <input class="form-control" id="query" name="query" placeholder="Enter your query here" required=true
-        value="SELECT DISTANCE(POINT('ICRS',alpha,delta), POINT('ICRS',266.41683,-29.00781)) AS dist, * FROM public.g10_mw  WHERE 1=CONTAINS(POINT('ICRS',alpha,delta),CIRCLE('ICRS',266.41683,-29.00781, 0.08333333)) ORDER BY dist ASC">
-        <label for="outfile">Output file</label>
-        <input class="form-control" id="outfile" name="outfile" placeholder="Enter your output file here" required=true
-        value="SampleFile_{{millis}}.out">
-    </div>
-    <button type="submit" class="btn btn-default">Queue AVI job</button>
-</form -->
-
-<form enctype="multipart/form-data" action="{% url 'avi:index' %}" method="post">
+<form enctype="multipart/form-data" action="{% url 'avi:run_ulysses' %}" method="post">
     {% csrf_token %}
     <div class="form-group">
       <table class="table table-striped table-bordered table-hover" >
         <tbody>
-          {{ form.as_table }}
+          {{ spectraform.as_table }}
         </tbody>
       </table>
     </div>
@@ -33,5 +25,3 @@
 </form>
 
 
-{% load staticfiles %}
-<script src="{% static 'avi/js/panel_enter_query.js' %}"></script>

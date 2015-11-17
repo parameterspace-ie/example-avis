@@ -1,8 +1,13 @@
-#
-# Derek O'Callaghan (Parameter Space) 2015
-#
+'''
+GAVIP Example AVIS: Multiple Pipeline AVI
+
+Some custom template filters
+'''
+
+import json
 
 from django import template
+from django.utils.safestring import mark_safe
 
 register = template.Library()
 
@@ -13,3 +18,8 @@ def addclass(value, arg):
     See: http://stackoverflow.com/questions/5827590/css-styling-in-django-forms
     """
     return value.as_widget(attrs={'class': arg})
+
+
+@register.filter
+def as_json(data):
+    return mark_safe(json.dumps(data))

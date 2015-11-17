@@ -3,44 +3,40 @@
     <h4>Ulysses Results</h4>
   </div>
   <div class="panel-body">
-      <p>This is a panel which renders one of the job results.</p>
-
-      <p>Select an area of the plot to zoom in on it. TODO</p>
+      <p>This panel renders one of the Ulysses job results.</p>
 
       <ul>
-        <li> The data is rendered using highcharts.</li>
-        <li> The pipeline creates a large JSON object using two columns from the resulting VOTable from the query.</li>
-        <li>When a result is accessed, javascript makes a call to an AVI endpoint which returns the JSON data for a particular job. </li>
-        <li>This data is then dynamically loaded in to the highchart object.</li>
+        <li>The pipeline is intended to provide a demonstration of how (DPAC) tools written in Java may be called from AVI pipelines. 
+        It currently:
+        <ul>
+          <li>Runs Ulysses using parameters similar to an example provided in its README file.</li>
+          <li>Converts one of the output files into a pandas DataFrame (<a href="http://pandas.pydata.org/">pandas</a>).</li>
+          <li>Outputs a JSON object containing the simulated values.</li>
+        </ul>
+        <li>A plot of GBP and GRP is rendered using highcharts.</li>
       </ul>
   </div>
 </div>
 
 {% load staticfiles %}
-<!--script src="http://code.highcharts.com/highcharts.js"></script-->
-<script src="http://code.highcharts.com/3.0.7/highcharts.js"></script>
-<!--script src="http://code.highcharts.com/modules/exporting.js"></script-->
-<script src="http://code.highcharts.com/3.0.7/modules/exporting.js"></script>
+
+{% load avi_filters %}
 
 <div class="panel panel-info">
   <div class="panel-heading">
-  TODO - include original form with read-only fields
+  Noise Free Spectra Analysis
   </div>
   <div class="panel-body">
-    {{ dfdescription|safe }}
+    {{ ulysses_dfdescription|safe }}
     
-    <div id="bprprvs-chart"></div>
-    <script type="text/javascript">
-        new Highcharts.Chart({{bprprvs_chart|safe}});
-    </script>
-    <div id="gbpgrp-chart"></div>
+    <div id="ulysses_gbpgrp-chart"></div>
     <script type="text/javascript">
     chart = new Highcharts.Chart({
         chart: {
             type: 'scatter',
             zoomType: 'xy',
             
-            renderTo: 'gbpgrp-chart',
+            renderTo: 'ulysses_gbpgrp-chart',
             events: {
                 //load: data_loader
             }
@@ -102,20 +98,17 @@
                     pointFormat: '{point.x} GBP, {point.y} GRP'
                 }
             }
-        },series: [{
-            name: 'Noise Free Spectra',
-            showInLegend: false,
-            color: 'rgba(223, 83, 83, .5)',
-            data: {{ bprp_data }}
-        }]
+        },series: {% if ulysses_hc_series %} {{ ulysses_hc_series|as_json }} {% else %} [] {% endif %}
+//                [{
+//            name: 'Noise Free Spectra',
+//            showInLegend: false,
+//            color: 'rgba(223, 83, 83, .5)',
+//            data: {{ bprp_data }}
+//        }]
     });  
     
     </script>
   </div>
 </div>
 
-<div id="container">
-</div>
 
-
-<script src="{% static 'avi/js/panel_result.js' %}"></script>

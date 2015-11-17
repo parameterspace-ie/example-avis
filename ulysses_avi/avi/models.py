@@ -1,8 +1,8 @@
-"""
-GAVIP Example AVIS: Ulysses AVI
+'''
+GAVIP Example AVIS: Multiple Pipeline AVI
 
-Django models used by the AVI pipeline
-"""
+Django models used by the AVI pipelines
+'''
 
 
 from django.db import models
@@ -41,3 +41,16 @@ class NoisySpectraJob(AviJob):
 
 
 
+class GacsIgslAnalysisJob(AviJob):
+
+    """
+    Model to be used for recording GACS IGSL Query parameter
+    """
+
+    # TODO: add validators
+    query = models.CharField(max_length=500, default="select top 100000 * from public.igsl_source where aux_ogle = 'True' and rand(1) <= 0.1;")
+
+    def __unicode__(self):              # __unicode__ on Python 2
+        return 'GACS IGSL Analysis Job: query: %s, state: %s' \
+                                    % (self.query, 
+                                       self.request.pipeline_state.state)
