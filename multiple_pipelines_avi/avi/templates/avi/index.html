@@ -1,0 +1,66 @@
+{% extends "base/base.html" %}
+
+{% block avi_title %}
+GAVIP Example AVIs: Multiple Pipelines AVI
+{% endblock avi_title %}
+
+{% block avi_content %}
+{% load staticfiles %}
+<link href="{% static 'avi/css/avi.css' %}" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="{% static 'datatables/datatables.min.js' %}"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'datatables/datatables.min.css' %}"/>
+
+{% if show_welcome %}
+  {% include "avi/avi_welcome.html" %}
+{% endif %}
+
+<div class="container-fluid">
+  
+  <div class="row navoffset">
+    <div class="col-sm-3 col-md-2">
+      {% include "avi/avi_sidenav.html" %}
+    </div>  
+    <div class="col-sm-9 col-md-10">
+      <div id="avi_tabcontent" class="tab-content">
+
+        <div role="tabpanel" class="tab-pane fade {% if not ulysses_result and not gacs_result %} active in {% endif %}" id="runulysses" aria-labelledby="runulysses-tab">
+          {% include "avi/panel_run_ulysses.html" %}
+        </div>
+        
+        <div role="tabpanel" class="tab-pane fade" id="gacsigsl" aria-labelledby="gacsigsl-tab" anchor="gacsigsl-tab">
+          {% include "avi/panel_analyse_gacs_igsl.html" %}
+        </div>
+
+        <div role="tabpanel" class="tab-pane fade" id="job" aria-labelledby="job-tab" anchor="job-tab">
+          {% include "avi/panel_job_list.html" %}
+        </div>
+
+<!--script src="http://code.highcharts.com/highcharts.js"></script-->
+<script src="http://code.highcharts.com/3.0.7/highcharts.js"></script>
+<!--script src="http://code.highcharts.com/modules/exporting.js"></script-->
+<script src="http://code.highcharts.com/3.0.7/modules/exporting.js"></script>
+
+        <div role="tabpanel" class="tab-pane fade {% if ulysses_result %} active in {% endif %}" id="result" aria-labelledby="result-tab">
+          {% include "avi/panel_ulysses_result.html" %}
+        </div>
+
+        <div role="tabpanel" class="tab-pane fade {% if gacs_result %} active in {% endif %}" id="gacsresult" aria-labelledby="gacsresult-tab">
+          {% include "avi/panel_gacs_result.html" %}
+        </div>
+
+        <div role="tabpanel" class="tab-pane fade" id="help" aria-labelledby="help-tab">
+          {% include "avi/panel_help.html" %}
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+$(document).ready(function (){
+var anchor = window.location.hash.substring(1);
+$('#'+anchor).click();
+});
+</script>
+{% endblock avi_content %}
