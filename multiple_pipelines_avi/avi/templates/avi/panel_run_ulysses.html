@@ -1,0 +1,27 @@
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <h4>Running Ulysses</h4>
+  </div>
+  <div class="panel-body">
+    This pipeline runs the <a href="http://wiki.cosmos.esa.int/gaia-dpac/index.php/CU8:_Ulysses">CU8 Ulysses BP/RP Simulator</a>, based on the following example
+    found in its README file:
+    <p>
+    <pre>$ java -jar dist/ulysses.jar -f "data/input/marcs/*LR.spectra" -w data/input/wavelengthLR.dat -n 1 -G 17 -A 1 -oversamp 1 -conversion 2</pre>
+    </p> 
+  </div>
+</div>
+
+<form enctype="multipart/form-data" action="{% url 'avi:run_ulysses' %}" method="post">
+    {% csrf_token %}
+    <div class="form-group">
+      <table class="table table-striped table-bordered table-hover" >
+        <tbody>
+          {{ spectraform.as_table }}
+        </tbody>
+      </table>
+    </div>
+    <br/>
+    <button type="submit" class="btn btn-default">Run Ulysses</button>
+</form>
+
+
