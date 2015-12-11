@@ -8,7 +8,7 @@ from avi import views
 
 urlpatterns = patterns(
     '',
-    url(r'^$', views.main, name='main'),
+    url(r'^$', views.main, name='main'), # note: these urls are prefixed with /avi/
 
     url(r'^run_query/$',
         views.run_query, name='run_query'),

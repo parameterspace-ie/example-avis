@@ -47,7 +47,7 @@ def main(request):
         "show_welcome": request.session.get('show_welcome', True)
     }
     request.session['show_welcome'] = False
-    return render(request, 'avi/main.html', context)
+    return render(request, 'avi/index.html', context)
 
 
 @require_http_methods(["POST"])
