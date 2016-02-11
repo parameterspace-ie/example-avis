@@ -11,7 +11,7 @@ $.ajaxSetup({
     }
 });
 
-var chartold; // create global
+var chart; // create global
 
 function view_result(url){
     init_chart(function(){
@@ -20,7 +20,7 @@ function view_result(url){
 }
 
 function init_chart(data_loader){
-    chartold = new Highcharts.Chart({
+    chart = new Highcharts.Chart({
         chart: {
             type: 'scatter',
             zoomType: 'xy',
@@ -99,8 +99,7 @@ function load_result(url) {
     $.ajax({
         url: url,
         success: function(resultdata) {
-            console.log(resultdata['data']);
-            chartold.series[0].setData(resultdata['data']);
+            chart.series[0].setData(resultdata['data']);
         },
         cache: false
     });

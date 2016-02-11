@@ -15,15 +15,12 @@ AVI query from your AVI interface.
 """
 import os
 import time
-import json
 import logging
 
 from django.conf import settings
 from django.http import JsonResponse
 from django.shortcuts import redirect, get_object_or_404
 from django.shortcuts import render
-from django.core import serializers
-from django.utils import formats
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.views.decorators.http import require_http_methods
@@ -34,20 +31,25 @@ from avi.models import DemoModel
 
 logger = logging.getLogger(__name__)
 
+def get_default_context():
+    """
+    'millis' is used to populate an output file name parameter
+    'standalone' is used to show a convenient toolbar for users
+    """ 
+    return {
+        "millis": int(round(time.time() * 1000)),
+        "standalone": settings.STANDALONE # STANDALONE will be true in this case
+    }
+
+
 @require_http_methods(["GET"])
-def main(request):
+def index(request):
     """
     This view is the first view that the user sees
     We send a dictionary called a context, which contains 
     'millis' and 'standalone' variables.
     """
-    context = {
-        "millis": int(round(time.time() * 1000)),
-        "standalone": False, # This stops the base template rendering the navbar on top
-        "show_welcome": request.session.get('show_welcome', True)
-    }
-    request.session['show_welcome'] = False
-    return render(request, 'avi/index.html', context)
+    return render(request, 'avi/index.html', context=get_default_context())
 
 
 @require_http_methods(["POST"])
@@ -69,62 +71,79 @@ def run_query(request):
     We start the job using the job_request ID, and return the 
     ID to the user so they can view progress.
     """
-    outfile = request.POST.get("outfile")
-    adql_query = request.POST.get("query")
+    outfile = request.POST["outfile"]
+    adql_query = request.POST["query"]
 
     job_model = DemoModel.objects.create(
         query=adql_query,
         outputFile=outfile
     )
     job_task = manager.create_avi_job_task(request, job_model, "ProcessData")
+
     manager.start_avi_job(job_task.job_id)
-    return JsonResponse({'job': job_task.job_id})
+
+    return redirect('avi:job_page', job_id=job_task.job_id)
 
 
 @require_http_methods(["GET"])
-def job_list(request):
+def job_detail(request, job_id):
     """
-    This view is used to return all job progress
+    This view is used to show a job progress window using a job ID
     """
-    jobs = DemoModel.objects.all()
-    jsondata = {
-        "data": []
-    }
-    for job in jobs:
-        jsondata['data'].append(serialize_job(job))
-    return JsonResponse(jsondata)
-
-
-def serialize_job(job):
-    logger.debug(job)
-    data = {
-        "job_id": job.request.job_id,
-        "created": formats.date_format(job.request.created, "SHORT_DATETIME_FORMAT"),
-
-        "result_path": job.request.result_path,
-        "public_result_path": job.request.public_result_path,
-        
-        "state": job.request.pipeline_state.state,
-        "progress": job.request.pipeline_state.progress,
-        "exception": job.request.pipeline_state.exception,
-        "dependency_graph": job.request.pipeline_state.dependency_graph,
-        "completed": formats.date_format(job.request.pipeline_state.last_activity_time, "SHORT_DATETIME_FORMAT")
-    }
-    return data
-
-
-@require_http_methods(["GET"])
-def job_data(request, job_id):
     job = get_object_or_404(DemoModel, request_id=job_id)
+    context=get_default_context()
+    context['job'] = job
+    return render(request, 'avi/job_progress.html', context=context)
+
+
+@require_http_methods(["GET"])
+def job_status(request, job_id):
+    """
+    This view returns a JSON job status to JavaScript in the browser.
+    We can use that to update a progress bar. 
+    """
+    get_object_or_404(DemoModel, request_id=job_id)
+    status_data = manager.get_pipeline_status(job_id)
+    return JsonResponse(status_data)
+
+
+@require_http_methods(["GET"])
+def job_summary(request, job_id):
+    """
+    This view is used when a job is complete to give some 
+    detail of the results themselves, as well as provide 
+    a button to view the results.
+    """
+    job = get_object_or_404(DemoModel, request_id=job_id)
+    # Create the result context
     file_path = os.path.join(settings.OUTPUT_PATH, job.outputFile)
-    with open(file_path, 'r') as outFile:
-        job_data = json.load(outFile)
-    return JsonResponse(job_data)
+    file_size = float(os.path.getsize(file_path)) / 1048576
+    file_mod_time = time.ctime(os.path.getmtime(file_path))
+
+    # include the URL for the final job
+    result_url = reverse('avi:job_result',
+                         kwargs={'job_id': job_id})
+    context = get_default_context()
+    context.update({
+        'resultURL': result_url,
+        'filePath': file_path,
+        'fileSize': file_size,
+        'fileModTime': file_mod_time
+    })
+    return render(request, 'avi/job_summary.html', context=context)
 
 
 @require_http_methods(["GET"])
 def job_result(request, job_id):
-    return render(request, 'avi/job_result.html', {'job_id': job_id})
+    job = get_object_or_404(DemoModel, request_id=job_id)
+    # The output file of our job is a file containing a bokeh plot
+    # So open the file, and extract the content.
+    file_path = os.path.join(settings.OUTPUT_PATH, job.outputFile)
+    with open(file_path, 'r') as outFile:
+        file_content = outFile.read()
+    context=get_default_context()
+    context['bokehPlot'] = file_content
+    return render(request, 'avi/job_result.html', context=context)
 
 
 @require_http_methods(["GET"])

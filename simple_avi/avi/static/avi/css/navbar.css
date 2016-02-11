@@ -19,15 +19,18 @@ nav.sidebar img{
     margin:auto;
 }
 
+nav.sidebar ul{
+    float: none;
+}
 
 /*adds border top to first nav box */
 nav.sidebar .navbar-nav > li:first-child{
-    border-top: 1px #e5e5e5 solid;
+    border-top: 1px #555 solid;
 }
 
 /*adds border to bottom nav boxes*/
 nav.sidebar .navbar-nav > li{
-    border-bottom: 1px #e5e5e5 solid;
+    border-bottom: 1px #555 solid;
 }
 
 /* Colors/style dropdown box*/
@@ -55,6 +58,8 @@ nav.sidebar .navbar-collapse, nav.sidebar .container-fluid{
 nav.sidebar{
     height: 100%;
     margin-bottom: 0px;
+    border: 1px #999 solid;
+    background-color: #ddd;
 }
 
 /*give sidebar 100% width;*/
