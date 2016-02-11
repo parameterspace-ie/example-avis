@@ -1,1 +1,0 @@
-#from avi.tests.test_index import *
