@@ -1,0 +1,22 @@
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <h4>Analyse GACS-Dev IGSL Sources</h4>
+  </div>
+  <div class="panel-body">
+    This pipeline performs some cursory analysis on a random sample of GACS-dev IGSL sources that were found in OGLE-III.
+  </div>
+</div>
+
+<form enctype="multipart/form-data" action="{% url 'avi:run_gacsigsl' %}" method="post">
+    {% csrf_token %}
+    <div class="form-group">
+      <table class="table table-striped table-bordered table-hover" >
+        <tbody>
+          {{ gacsform.as_table }}
+        </tbody>
+      </table>
+    </div>
+    <br/>
+    <button type="submit" class="btn btn-default">Analyse Sources</button>
+</form>
+
