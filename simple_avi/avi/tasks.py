@@ -6,6 +6,8 @@ An example AVI pipeline is defined here, consisting of three tasks:
 - DummyTask - demonstrates dependencies, but does nothing
 - DownloadData - uses services.gacs.GacsQuery to run ADQL queries in GACS(-dev)
 - ProcessData - generates a simple scatter plot with Bokeh from the downloaded data
+@req: REQ-0006
+@comp: AVI Web System
 """
 
 import os
@@ -26,6 +28,47 @@ import services.gacs as svc_gacs
 # Library used for VOTable parsing
 from astropy.io.votable import parse
 
+
+# Testing classes
+# --
+class EmptyTask(AviTask):
+    """AviTask with no unique methods or parameters"""
+    pass
+
+class TaskWithParameter(AviTask):
+    """AviTask with one AviParameter"""
+    x = AviParameter()
+
+class TaskAppendToFile(AviTask):
+    """AviTask which will create a file and append some text"""
+    now = AviParameter()
+    testfile = AviParameter()
+
+    # If you don't have an output file, you need to tell luigi how
+    # to figure out if it's complete or not!
+    def output(self):
+        return AviLocalTarget(self.testfile)
+
+    def run(self):
+        with open(self.output().path, 'w') as f:
+            f.write(self.now + '\n')
+
+class TaskOutput(TaskAppendToFile):
+    def output(self):
+        return AviLocalTarget(self.testfile)
+
+class TaskDependent(TaskOutput):
+    def requires(self):
+        return self.task_dependency(TestTask, [])
+
+class TestTask(AviTask):
+    def output(self):
+        return AviLocalTarget('/data/output/testtask.txt')
+
+    def run(self):
+        with self.output().open('w') as f:
+            f.write('Test')
+# --
 
 class DummyTask(AviTask):
     """
@@ -53,15 +96,15 @@ class DownloadData(svc_gacs.GacsQuery):
     See :class:`GacsQuery`
     """
     query = AviParameter()
-    output_file = AviParameter()
+    outputFile = AviParameter()
 
     def output(self):
         return AviLocalTarget(os.path.join(
-            settings.OUTPUT_PATH, 'simulatedData_%s.vot' % self.output_file
+            settings.OUTPUT_PATH, 'simulatedData_%s.vot' % self.outputFile
         ))
 
     def requires(self):
-        return self.task_dependency(DummyTask, [self.output_file])
+        return self.task_dependency(DummyTask)
 
 
 class ProcessData(AviTask):
@@ -81,7 +124,7 @@ class ProcessData(AviTask):
         ))
 
     def requires(self):
-        return self.task_dependency(DownloadData, [self.query, self.outputFile])
+        return self.task_dependency(DownloadData)
 
     def run(self):
         # load the votable content from previous task

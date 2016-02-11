@@ -1,174 +1,202 @@
+"""
+@test: CU9-GAVIP-SYS-5-3
+@test: CU9-GAVIP-SYS-5-4
+@test: CU9-GAVIP-SYS-5-5
+@test: CU9-GAVIP-SYS-5-7
+"""
 from django.test import TestCase
 from avi.models import DemoModel
 from django.core.urlresolvers import reverse
+from django.contrib.auth.models import User
+from django.conf import settings
+
 from pipeline.models import AviJobRequest, PipeState
+
+import os
 
 # Create your tests here.
 
+
 class ModelAVIViewsTestcase(TestCase):
-	
-	def test_index_page_is_ok_200(self):
-		response = self.client.get(reverse('avi:index'))
-		self.assertEqual(response.status_code, 200)
 
-	def test_index_page_recieves_expected_context(self):
-		response = self.client.get(reverse('avi:index'))
+    def setUp(self):
+        settings.STANDALONE = True
 
-		self.assertIn('millis', response.context)
-		self.assertIn('standalone', response.context)
-		
-	def test_index_page_returns_expected_content(self):
-		response = self.client.get(reverse('avi:index'))
+        with open('/data/output/outputfile', 'a') as f:
+            f.write('{"foobar": [[1.0, 0.0], [1.1, 0.1]]}')
 
-		self.assertTemplateUsed(response, 'avi/index.html')
-		self.assertTemplateUsed(response, 'base/base.html')
-		self.assertTemplateUsed(response, 'base/devheader.html')
-		self.assertTemplateUsed(response, 'avi/user_detail.html')
+        job_id = DemoModel.objects.create(
+            query='query',
+            outputFile='outputfile'
+        ).id
+        # After the object is created, celery will immediately
+        # start processing the job. Changing it's data
+        # So get it AGAIN after creation.
+        self.job = DemoModel.objects.get(id=job_id)
 
-		self.assertIn('Simple AVI', response.content)
-		self.assertIn('SampleFile_%s.out' %response.context['millis'], response.content)
-		self.assertIn('Standalone: %s' %response.context['standalone'], response.content)
+    def tearDown(self):
+        settings.STANDALONE = True
 
-	def test_run_query_page_get_not_allowed_405(self):
-		# /avi/run_query/
-		response = self.client.get(reverse('avi:run_query'))
-		self.assertEqual(response.status_code, 405)
+        os.remove('/data/output/outputfile')
 
-	def test_non_existent_job_pages_404(self):
-		# /avi/job/1000/
-		resp_job_page = self.client.get(reverse('avi:job_page', args=(1000,)))
-		self.assertEqual(resp_job_page.status_code, 404)
-		"""
-		Non-existent status raises the error:
-		DoesNotExist: AviJobRequest matching query does not exist.
-		instead of just giving back a 404. 
+        DemoModel.objects.all().delete()
 
-		Changing job_status in views.py to include 
-		job = get_object_or_404(DemoModel, request_id=job_id)
-		fixes this error and the test below passes.
-		"""
-		## /avi/status/1000/
-		resp_job_status = self.client.get(reverse('avi:job_status', args=(1000,)))
-		self.assertEqual(resp_job_status.status_code, 404)
-		# /avi/job_summary/1000/
-		resp_job_summary = self.client.get(reverse('avi:job_summary', args=(1000,)))
-		self.assertEqual(resp_job_summary.status_code, 404)
-		# /avi/result/1000/
-		resp_job_result = self.client.get(reverse('avi:job_result', args=(1000,)))
-		self.assertEqual(resp_job_result.status_code, 404)
+    def test_main_page_is_ok_200(self):
+        response = self.client.get(reverse('avi:main'))
+        self.assertEqual(response.status_code, 200)
 
-	def test_existing_job_pages_are_ok_200(self):
+    def test_main_page_recieves_expected_context(self):
+        response = self.client.get(reverse('avi:main'))
 
-		job = DemoModel.objects.create( 
-			query='query', 
-			outputFile='outputfile', 
-			request=AviJobRequest.objects.create(
-				pipeline_state=PipeState.objects.create(
-					progress=0,
-					dependency_graph={}
-				)
-			)
-		)
-		# /avi/job/###/
-		resp_job_page = self.client.get(reverse('avi:job_page', args=(job.id,)))
-		self.assertEqual(resp_job_page.status_code, 200)
-		# /avi/status/###/
-		resp_job_status = self.client.get(reverse('avi:job_status', args=(job.id,)))
-		self.assertEqual(resp_job_status.status_code, 200)
+        self.assertIn('millis',
+                      response.context)
+        self.assertIn('standalone',
+                      response.context)
 
-		"""
-		Next two pages raise
-		[Errno 2] No such file or directory: u'/data/output/outputfile'
-		This is expected because this is just a test, I think. 
-		I'll try and think of a workaround later.
-		"""
+    def test_main_page_returns_expected_content(self):
+        response = self.client.get(reverse('avi:main'))
 
-		# # /avi/job_summary/###/
-		# resp_job_summary = self.client.get(reverse('avi:job_summary', args=(job.id,)))
-		# self.assertEqual(resp_job_summary.status_code, 200)
-		# #/avi/result/###/
-		# resp_job_result = self.client.get(reverse('avi:job_result', args=(job.id,)))
-		# self.assertEqual(resp_job_result.status_code, 200)
+        self.assertTemplateUsed(response,
+                                'avi/main.html')
+        self.assertTemplateUsed(response,
+                                'base/base.html')
+        self.assertTemplateUsed(response,
+                                'avi/avi_welcome.html')
+        self.assertTemplateUsed(response,
+                                'avi/avi_sidenav.html')
+        self.assertTemplateUsed(response,
+                                'avi/panel_enter_query.html')
+        self.assertTemplateUsed(response,
+                                'plugins/panel_job_list.html')
+        self.assertTemplateUsed(response,
+                                'avi/panel_result.html')
+        self.assertTemplateUsed(response,
+                                'avi/panel_help.html')
 
-	def test_job_detail_page_recieves_expected_context(self):
-		job = DemoModel.objects.create( 
-			query='query', 
-			outputFile='outputfile', 
-			request=AviJobRequest.objects.create(
-				pipeline_state=PipeState.objects.create(
-					progress=0,
-					dependency_graph={}
-				)
-			)
-		)
-		response = self.client.get(reverse('avi:job_page', args=(job.id,)))
-		self.assertIn('request', response.context)
-		self.assertIn('user', response.context)
+        self.assertIn('Simple AVI',
+                      response.content)
+        self.assertIn('SampleFile_%s.out' % response.context['millis'],
+                      response.content)
 
-	def test_job_detail_page_returns_expected_content(self):
-		job = DemoModel.objects.create( 
-			query='query', 
-			outputFile='outputfile', 
-			request=AviJobRequest.objects.create(
-				pipeline_state=PipeState.objects.create(
-					progress=0,
-					dependency_graph={}
-				)
-			)
-		)
-		response = self.client.get(reverse('avi:job_page', args=(job.id,)))
+    # This needs a redis connection to work
+    # Not gonna happen for a test
 
-		self.assertTemplateUsed(response, 'base/base.html')
-		self.assertTemplateUsed(response, 'avi/job_progress.html')
+    def test_run_query_page_get_ok_200(self):
+        # /avi/run_query/
 
-		self.assertIn('AVI job detail', response.content)
-		""" 
-		job.request.created gives the same date in different format.
-		"""
-		#self.assertIn('%s' %job.request.created, response.content)
-		
-		self.assertIn(job.query, response.content)
+        query = "SELECT DISTANCE(POINT('ICRS',alpha,delta), POINT('ICRS',266.41683,-29.00781)) AS dist, * FROM public.g10_mw  WHERE 1=CONTAINS(POINT('ICRS',alpha,delta),CIRCLE('ICRS',266.41683,-29.00781, 0.08333333)) ORDER BY dist ASC"
+        outputFile = 'SampleFile_1451901076099.out'
 
-		"""
-		job.request.pipelineState.state raises
-		AttributeError: 'AviJobRequest' object has no attribute 'pipelineState'
+        response = self.client.post(reverse('avi:run_query'),
+                                    {'query': query,
+                                     'outfile': outputFile})
+        # Status code
+        self.assertEqual(response.status_code, 200)
+        # Context
+        self.assertIsNone(response.context)
+        # Content
+        self.assertEqual('{}',
+                         response.content)
 
-		job.request.pipeline_state.state returns PENDING
+    def test_non_existent_job_pages_404(self):
 
+        ## /avi/status/1000/
+        resp_job_data = self.client.get(reverse('avi:job_data', args=(1000,)))
+        self.assertEqual(resp_job_data.status_code, 404)
 
-		In job_progress_html: 
-		{{job.request.pipelineState.state}} shows nothing, it's just blank.
-		If that part of the html is changed to
-		{{job.request.pipeline_state.state}} is shows PENDING and the test below passes
-		"""
-		#self.assertIn('%s' %job.request.pipeline_state.state, response.content)
-		self.assertIn('%s' %job.request_id, response.content)
+    def test_existing_job_pages_are_ok_200(self):
 
-	def test_job_status_page_recieves_expected_context(self):
-		job = DemoModel.objects.create( 
-			query='query', 
-			outputFile='outputfile', 
-			request=AviJobRequest.objects.create(
-				pipeline_state=PipeState.objects.create(
-					progress=0,
-					dependency_graph={}
-				)
-			)
-		)
-		response = self.client.get(reverse('avi:job_status', args=(job.id,)))
-		self.assertEqual(None, response.context)
+        self.job = DemoModel.objects.get()
 
-	def test_job_status_page_returns_expected_content(self):
-		job = DemoModel.objects.create( 
-			query='query', 
-			outputFile='outputfile', 
-			request=AviJobRequest.objects.create(
-				pipeline_state=PipeState.objects.create(
-					progress=0,
-					dependency_graph={}
-				)
-			)
-		)
-		response = self.client.get(reverse('avi:job_status', args=(job.id,)))
-		self.assertIn('%s' %job.request.pipeline_state.progress, response.content)
-		self.assertIn('%s' %job.request.pipeline_state.state, response.content)
+        # /avi/job_list/
+        resp_job_page = self.client.get(reverse('avi:plugins:job_list'))
+        self.assertEqual(resp_job_page.status_code, 200)
+        # /avi/job_data/###/
+        resp_job_data = self.client.get(reverse('avi:job_data',
+                                        args=(self.job.id,)))
+        self.assertEqual(resp_job_data.status_code, 200)
+
+        #/avi/result/###/
+        resp_job_result = self.client.get(reverse('avi:job_result',
+                                                  args=(self.job.id,)))
+        self.assertEqual(resp_job_result.status_code, 200)
+
+    def test_job_list_page_recieves_expected_context(self):
+
+        # /avi/job_list/
+        resp_job_page = self.client.get(reverse('avi:plugins:job_list'))
+        self.assertIsNone(resp_job_page.context)
+
+    def test_job_list_page_returns_expected_content(self):
+
+        # /avi/job_list/
+        resp_job_page = self.client.get(reverse('avi:plugins:job_list'))
+
+        # No templates used to render the response
+
+        self.assertIn(self.job.request.result_path,
+                      resp_job_page.content)
+        self.assertIn(self.job.request.pipeline_state.state,
+                      resp_job_page.content)
+        self.assertIn(self.job.request.public_result_path,
+                      resp_job_page.content)
+        self.assertIn('%s' % self.job.request_id,
+                      resp_job_page.content)
+
+        reformatted_date = self.job.request.created.strftime('%m/%d/%Y %-I')
+        self.assertIn('%s' % reformatted_date,
+                      resp_job_page.content)
+
+        self.assertIn('%s' % self.job.request.pipeline_state.progress,
+                      resp_job_page.content)
+        self.assertIn(self.job.request.pipeline_state.exception,
+                      resp_job_page.content)
+
+    def test_job_data_page_recieves_expected_context(self):
+
+        self.job = DemoModel.objects.get()
+        # /avi/job_data/###/
+        resp_job_data = self.client.get(reverse('avi:job_data',
+                                        args=(self.job.id,)))
+        self.assertIsNone(resp_job_data.context)
+
+    def test_job_data_page_returns_expected_content(self):
+
+        # No templates used to render the response
+
+        self.job = DemoModel.objects.get()
+        response = self.client.get(reverse('avi:job_data',
+                                           args=(self.job.id,)))
+        self.assertIn('{"foobar": [[1.0, 0.0], [1.1, 0.1]]}',
+                      response.content)
+
+    def test_job_result_page_recieves_expected_context(self):
+
+        self.job = DemoModel.objects.get()
+        #/avi/result/###/
+        resp_job_result = self.client.get(reverse('avi:job_result',
+                                                  args=(self.job.id,)))
+        self.assertIn('job_id',
+                      resp_job_result.context)
+        self.assertEqual('1',
+                         resp_job_result.context['job_id'])
+
+    def test_job_result_page_returns_expected_content(self):
+
+        self.job = DemoModel.objects.get()
+        response = self.client.get(reverse('avi:job_result',
+                                           args=(self.job.id,)))
+
+        self.assertTemplateUsed(response,
+                                'avi/job_result.html')
+        self.assertTemplateUsed(response,
+                                'base/base.html')
+        self.assertTemplateUsed(response,
+                                'avi/panel_result.html')
+
+        self.assertIn('GAVIP Example AVIs: Simple AVI'
+                      + ' (Result %s)' % self.job.id,
+                      response.content)
+        self.assertIn('var data_url = "/avi/job_data/"'
+                      + ' + %s;' % self.job.id,
+                      response.content)
