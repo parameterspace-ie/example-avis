@@ -101,14 +101,7 @@ class AnalyseUlyssesOutput(AviTask):
         return AviLocalTarget(os.path.join(settings.OUTPUT_PATH, self.get_output_filename()))
 
     def requires(self):
-        return self.task_dependency(RunUlysses, [self.spectra_input, 
-                                                self.wavelength_input,
-                                                self.num_noisy_spectra,
-                                                self.g_mag,
-                                                self.extinction,
-                                                self.oversampling,
-                                                self.conversion, 
-                                                self.output_file_prefix])
+        return self.task_dependency(RunUlysses, output_file_prefix=self.output_file_prefix)
 
     def run(self):
         """
@@ -179,8 +172,7 @@ class AnalyseGacsIgslOutput(AviTask):
         return AviLocalTarget(os.path.join(settings.OUTPUT_PATH, self.get_output_filename()))
 
     def requires(self):
-        return self.task_dependency(ExecuteQuery, [self.query, 
-                                                   self.output_file_prefix])
+        return self.task_dependency(ExecuteQuery, output_file_prefix=self.output_file_prefix)
 
     def run(self):
         """
@@ -189,7 +181,7 @@ class AnalyseGacsIgslOutput(AviTask):
         logger.info('Input VOTable file: %s' % self.input().path)
         t = Table.read(self.input().path, format='votable')
         df = pd.DataFrame(np.ma.filled(t.as_array()), columns=t.colnames)
-        gaiamagcols=['mag_b_j', 'mag_g', 'mag_grvs', 'mag_r_f']
+        gaiamagcols=['mag_bj', 'mag_g', 'mag_grvs', 'mag_rf']
         gaiadf = df[gaiamagcols]
         cluster_pred = KMeans(n_clusters=4).fit_predict(gaiadf)
          
@@ -200,7 +192,7 @@ class AnalyseGacsIgslOutput(AviTask):
                            3:(0,136,55,.5)}
         
         # Currently sampling 100 points per cluster to minimise highcharts Javascript activity in the template
-        hc_series = [{'name': 'Cluster %d' % cluster, 'showInLegend': True, 'color':'rgba(%s)' % ','.join([str(x) for x in colour]), 'data':gaiadf[['mag_b_j', 'mag_g']][cluster_pred==cluster].sample(n=100).values.tolist()} for cluster,colour in sorted(cluster_colours.iteritems(), key=operator.itemgetter(0))]
+        hc_series = [{'name': 'Cluster %d' % cluster, 'showInLegend': True, 'color':'rgba(%s)' % ','.join([str(x) for x in colour]), 'data':gaiadf[['mag_bj', 'mag_g']][cluster_pred==cluster].sample(n=100).values.tolist()} for cluster,colour in sorted(cluster_colours.iteritems(), key=operator.itemgetter(0))]
         analysis_context = {'gacs_result': True,
                             'gacs_dfdescription': gaiadf.describe().to_html(classes='table table-striped table-bordered table-hover'),
                             'gacs_hc_series': hc_series
