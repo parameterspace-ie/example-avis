@@ -26,6 +26,7 @@ class NoisySpectraJob(AviJob):
     extinction = models.IntegerField(default=1)
     oversampling = models.IntegerField(default=1)
     conversion = models.IntegerField(default=2)
+    pipeline_task = "AnalyseUlyssesOutput"
 
     def __unicode__(self):              # __unicode__ on Python 2
         return 'Noisy Spectra Job: spectra input: %s, wavelength input: %s, number of noisy spectra: %d, G Mag: %.2f, extinction: %d, oversampling: %d, conversion: %d, state: %s' \
@@ -49,6 +50,7 @@ class GacsIgslAnalysisJob(AviJob):
 
     # TODO: add validators
     query = models.CharField(max_length=500, default="select top 100000 * from public.igsl_source where aux_ogle = 'True' and rand(1) <= 0.1;")
+    pipeline_task = "AnalyseGacsIgslOutput"
 
     def __unicode__(self):              # __unicode__ on Python 2
         return 'GACS IGSL Analysis Job: query: %s, state: %s' \

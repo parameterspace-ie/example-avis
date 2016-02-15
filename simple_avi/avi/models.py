@@ -2,6 +2,8 @@
 GAVIP Example AVIS: Simple AVI
 
 Django models used by the AVI pipeline
+@req: REQ-0006
+@comp: AVI Web System
 """
 
 from django.db import models
@@ -19,3 +21,15 @@ class DemoModel(AviJob):
     """
     query = models.CharField(max_length=1000)
     outputFile = models.CharField(default="", max_length=100)
+    pipeline_task = "ProcessData"
+
+    def get_absolute_url(self):
+        return "%i/" % self.pk
+
+
+class TestModel(AviJob):
+
+    """This model is used in some pipeline tests"""
+    now = models.CharField(max_length=1000)
+    testfile = models.CharField(max_length=1000)
+    pipeline_task = models.CharField(max_length=1000)

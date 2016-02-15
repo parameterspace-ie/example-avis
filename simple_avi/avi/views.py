@@ -28,11 +28,14 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.views.decorators.http import require_http_methods
 
-from pipeline import manager
 from avi.models import DemoModel
-# from gavip_avi.decorators import require_gavip_role  # use this to restrict access to views in an AVI
+from gavip_avi.decorators import require_gavip_role  # use this to restrict access to views in an AVI
+ROLES = settings.GAVIP_ROLES
+
+from pipeline.models import AviJobRequest
 
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.WARN)
 
 @require_http_methods(["GET"])
 def main(request):
@@ -47,7 +50,7 @@ def main(request):
         "show_welcome": request.session.get('show_welcome', True)
     }
     request.session['show_welcome'] = False
-    return render(request, 'avi/index.html', context)
+    return render(request, 'avi/main.html', context)
 
 
 @require_http_methods(["POST"])
@@ -72,48 +75,13 @@ def run_query(request):
     outfile = request.POST.get("outfile")
     adql_query = request.POST.get("query")
 
-    job_model = DemoModel.objects.create(
+    job = DemoModel.objects.create(
         query=adql_query,
         outputFile=outfile
     )
-    job_task = manager.create_avi_job_task(request, job_model, "ProcessData")
-    manager.start_avi_job(job_task.job_id)
-    return JsonResponse({'job': job_task.job_id})
+    return JsonResponse({})
 
 
-@require_http_methods(["GET"])
-def job_list(request):
-    """
-    This view is used to return all job progress
-    """
-    jobs = DemoModel.objects.all()
-    jsondata = {
-        "data": []
-    }
-    for job in jobs:
-        jsondata['data'].append(serialize_job(job))
-    return JsonResponse(jsondata)
-
-
-def serialize_job(job):
-    logger.debug(job)
-    data = {
-        "job_id": job.request.job_id,
-        "created": formats.date_format(job.request.created, "SHORT_DATETIME_FORMAT"),
-
-        "result_path": job.request.result_path,
-        "public_result_path": job.request.public_result_path,
-        
-        "state": job.request.pipeline_state.state,
-        "progress": job.request.pipeline_state.progress,
-        "exception": job.request.pipeline_state.exception,
-        "dependency_graph": job.request.pipeline_state.dependency_graph,
-        "completed": formats.date_format(job.request.pipeline_state.last_activity_time, "SHORT_DATETIME_FORMAT")
-    }
-    return data
-
-
-@require_http_methods(["GET"])
 def job_data(request, job_id):
     job = get_object_or_404(DemoModel, request_id=job_id)
     file_path = os.path.join(settings.OUTPUT_PATH, job.outputFile)
@@ -138,3 +106,9 @@ def job_result_public(request, job_id, celery_task_id):
         return job_result(request, job_id)
     else:
         raise ObjectDoesNotExist("Invalid public URL")
+
+
+@require_gavip_role([ROLES.OP])
+def view_for_checking_auth(request):
+    """ A view for testing avi Authorization"""
+    return render(request, 'avi/view_for_checking_auth.html')

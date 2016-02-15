@@ -22,6 +22,7 @@ from avi.forms import GacsIgslAnalysisJobForm, NoisySpectraJobForm
 from avi.models import GacsIgslAnalysisJob, NoisySpectraJob
 
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 def get_default_context():
     return {'gacsform': GacsIgslAnalysisJobForm(),
@@ -61,11 +62,10 @@ def run_ulysses(request):
     form = NoisySpectraJobForm(request.POST)
         
     if form.is_valid():
-        job_model = form.instance
-            
-        job_task = manager.create_avi_job_task(request, job_model, 'AnalyseUlyssesOutput')
-        # Start the pipeline
-        manager.start_avi_job(job_task.job_id)
+        job_model = form.save()
+        logger.info('Ulysses pipeline job has been successfully created')
+    else:
+        logger.error('Ulysses input parameters form is invalid')
 
     return redirect('%s#job-tab' % resolve_url('avi:index'))
 
@@ -81,13 +81,10 @@ def run_gacsigsl(request):
 
     form = GacsIgslAnalysisJobForm(request.POST)
     if form.is_valid():
-        job_model = form.instance
-            
-        job_task = manager.create_avi_job_task(request, job_model, 'AnalyseGacsIgslOutput')
-        # Start the pipeline
-        manager.start_avi_job(job_task.job_id)
+        form.save()
+        logger.info('IGSL pipeline job has been successfully created')
     else:
-        logger.error('FORM IS INVALID')
+        logger.error('IGSL input parameters form is invalid')
 
     return redirect('%s#job-tab' % resolve_url('avi:index'))
 
@@ -118,14 +115,13 @@ def serialize_job(job):
         "state": job.request.pipeline_state.state,
         "progress": job.request.pipeline_state.progress,
         "exception": job.request.pipeline_state.exception,
-        "dependency_graph": job.request.pipeline_state.dependency_graph
     }
     return data
 
 
 @require_http_methods(["GET"])
 def job_result(request, job_id):
-    file_path = manager.get_pipeline_status(job_id)['result']
+    file_path = manager.get_pipeline_status(job_id)['output']
     context = get_default_context()
     with open(file_path, 'r') as out_file:
         context.update(json.load(out_file))
