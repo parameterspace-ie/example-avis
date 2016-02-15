@@ -26,7 +26,7 @@ $( "#dbquery_form" ).submit(function( event ) {
         },
         error: function(err){
             console.log(err);
-            alert("Something went wrong. Check the debugger");
+            alert("Simple AVI has encountered an error when sending a request to " + submitUrl + ". The error has been logged in the browser, and may be possible to inspect from the browser debugger.");
         },
         complete: function(){
             $('button:submit').removeAttr("disabled");
