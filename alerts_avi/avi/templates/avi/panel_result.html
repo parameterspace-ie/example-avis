@@ -1,0 +1,22 @@
+<div class="panel panel-info">
+  <div class="panel-heading">
+    Result view help
+  </div>
+  <div class="panel-body">
+      <p>This is a panel which renders one of the job results.</p>
+  </div>
+</div>
+
+<div id="container">
+</div>
+
+<div id="fig"></div>
+
+{% load staticfiles %}
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="https://mpld3.github.io/js/mpld3.v0.2.js"></script>
+
+<script>
+var fig = {{ job_data|safe }};
+mpld3.draw_figure("fig", fig);
+</script>

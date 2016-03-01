@@ -1,0 +1,218 @@
+2016-02-21 00:29:57,724 CRIT Supervisor running as root (no user in config file)
+2016-02-21 00:29:57,740 INFO RPC interface 'supervisor' initialized
+2016-02-21 00:29:57,740 CRIT Server 'inet_http_server' running without any HTTP authentication checking
+2016-02-21 00:29:57,740 INFO RPC interface 'supervisor' initialized
+2016-02-21 00:29:57,741 CRIT Server 'unix_http_server' running without any HTTP authentication checking
+2016-02-21 00:29:57,743 INFO supervisord started with pid 16
+2016-02-21 00:29:58,747 INFO spawned: 'redis-server' with pid 19
+2016-02-21 00:29:58,756 INFO spawned: 'prepare_avi' with pid 22
+2016-02-21 00:29:58,762 INFO spawned: 'worker-avi' with pid 23
+2016-02-21 00:29:58,769 INFO spawned: 'sshd' with pid 24
+2016-02-21 00:29:58,782 INFO spawned: 'queue-monitor' with pid 26
+2016-02-21 00:29:58,792 INFO spawned: 'gavip_avi_jupyter' with pid 27
+2016-02-21 00:29:58,802 INFO spawned: 'gavip_avi' with pid 28
+2016-02-21 00:29:58,804 INFO success: prepare_avi entered RUNNING state, process has stayed up for > than 0 seconds (startsecs)
+2016-02-21 00:29:59,867 INFO success: redis-server entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:29:59,868 INFO success: sshd entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:29:59,869 INFO success: queue-monitor entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:29:59,869 INFO success: gavip_avi_jupyter entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:29:59,869 INFO success: gavip_avi entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:29:59,948 INFO exited: gavip_avi (exit status 1; not expected)
+2016-02-21 00:29:59,972 INFO spawned: 'gavip_avi' with pid 51
+2016-02-21 00:29:59,973 INFO exited: gavip_avi_jupyter (exit status 1; not expected)
+2016-02-21 00:30:00,262 INFO spawned: 'gavip_avi_jupyter' with pid 54
+2016-02-21 00:30:01,458 INFO success: gavip_avi_jupyter entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:30:01,460 INFO success: gavip_avi entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:30:02,461 INFO success: worker-avi entered RUNNING state, process has stayed up for > than 3 seconds (startsecs)
+2016-02-21 00:30:04,878 INFO exited: worker-avi (exit status 1; not expected)
+2016-02-21 00:30:05,118 INFO spawned: 'worker-avi' with pid 77
+2016-02-21 00:30:05,348 INFO exited: gavip_avi (exit status 1; not expected)
+2016-02-21 00:30:05,414 INFO spawned: 'gavip_avi' with pid 82
+2016-02-21 00:30:05,624 INFO exited: gavip_avi_jupyter (exit status 1; not expected)
+2016-02-21 00:30:06,649 INFO spawned: 'gavip_avi_jupyter' with pid 87
+2016-02-21 00:30:06,653 INFO success: gavip_avi entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:30:07,174 INFO exited: prepare_avi (exit status 0; expected)
+2016-02-21 00:30:08,180 INFO success: worker-avi entered RUNNING state, process has stayed up for > than 3 seconds (startsecs)
+2016-02-21 00:30:08,182 INFO success: gavip_avi_jupyter entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:30:08,823 INFO exited: worker-avi (exit status 1; not expected)
+2016-02-21 00:30:08,841 INFO spawned: 'worker-avi' with pid 94
+2016-02-21 00:30:08,842 INFO exited: gavip_avi (exit status 1; not expected)
+2016-02-21 00:30:09,313 INFO spawned: 'gavip_avi' with pid 99
+2016-02-21 00:30:09,758 INFO exited: gavip_avi_jupyter (exit status 1; not expected)
+2016-02-21 00:30:10,777 INFO spawned: 'gavip_avi_jupyter' with pid 104
+2016-02-21 00:30:10,778 INFO success: gavip_avi entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:30:11,366 INFO exited: worker-avi (exit status 1; not expected)
+2016-02-21 00:30:11,628 INFO exited: gavip_avi (exit status 1; not expected)
+2016-02-21 00:30:12,202 INFO success: gavip_avi_jupyter entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:30:12,212 INFO spawned: 'gavip_avi' with pid 109
+2016-02-21 00:30:12,298 INFO exited: gavip_avi_jupyter (exit status 1; not expected)
+2016-02-21 00:30:12,499 INFO spawned: 'worker-avi' with pid 114
+2016-02-21 00:30:12,515 INFO spawned: 'gavip_avi_jupyter' with pid 115
+2016-02-21 00:30:13,348 INFO success: gavip_avi entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:30:14,127 INFO success: gavip_avi_jupyter entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:30:15,188 INFO exited: gavip_avi (exit status 1; not expected)
+2016-02-21 00:30:15,479 INFO spawned: 'gavip_avi' with pid 124
+2016-02-21 00:30:15,542 INFO success: worker-avi entered RUNNING state, process has stayed up for > than 3 seconds (startsecs)
+2016-02-21 00:30:15,822 INFO exited: gavip_avi_jupyter (exit status 1; not expected)
+2016-02-21 00:30:15,853 INFO spawned: 'gavip_avi_jupyter' with pid 128
+2016-02-21 00:30:15,987 INFO exited: worker-avi (exit status 1; not expected)
+2016-02-21 00:30:16,253 INFO spawned: 'worker-avi' with pid 134
+2016-02-21 00:30:16,942 INFO success: gavip_avi_jupyter entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:30:16,949 INFO success: gavip_avi entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:30:18,860 INFO exited: gavip_avi (exit status 1; not expected)
+2016-02-21 00:30:18,990 INFO spawned: 'gavip_avi' with pid 139
+2016-02-21 00:30:19,123 INFO exited: gavip_avi_jupyter (exit status 1; not expected)
+2016-02-21 00:30:19,479 INFO success: worker-avi entered RUNNING state, process has stayed up for > than 3 seconds (startsecs)
+2016-02-21 00:30:19,495 INFO spawned: 'gavip_avi_jupyter' with pid 144
+2016-02-21 00:30:19,658 INFO exited: worker-avi (exit status 1; not expected)
+2016-02-21 00:30:20,674 INFO spawned: 'worker-avi' with pid 149
+2016-02-21 00:30:20,676 INFO success: gavip_avi_jupyter entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:30:20,677 INFO success: gavip_avi entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:30:21,459 INFO exited: gavip_avi (exit status 1; not expected)
+2016-02-21 00:30:21,774 INFO spawned: 'gavip_avi' with pid 154
+2016-02-21 00:30:21,920 INFO exited: gavip_avi_jupyter (exit status 1; not expected)
+2016-02-21 00:30:22,952 INFO spawned: 'gavip_avi_jupyter' with pid 159
+2016-02-21 00:30:22,953 INFO success: gavip_avi entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:30:23,319 INFO exited: worker-avi (exit status 1; not expected)
+2016-02-21 00:30:23,890 INFO exited: gavip_avi (exit status 1; not expected)
+2016-02-21 00:30:24,393 INFO spawned: 'worker-avi' with pid 164
+2016-02-21 00:30:24,394 INFO success: gavip_avi_jupyter entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:30:24,409 INFO spawned: 'gavip_avi' with pid 165
+2016-02-21 00:30:24,540 INFO exited: gavip_avi_jupyter (exit status 1; not expected)
+2016-02-21 00:30:25,560 INFO spawned: 'gavip_avi_jupyter' with pid 174
+2016-02-21 00:30:25,562 INFO success: gavip_avi entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:30:26,566 INFO success: gavip_avi_jupyter entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:30:27,220 INFO exited: gavip_avi (exit status 1; not expected)
+2016-02-21 00:30:27,346 INFO spawned: 'gavip_avi' with pid 179
+2016-02-21 00:30:27,490 INFO success: worker-avi entered RUNNING state, process has stayed up for > than 3 seconds (startsecs)
+2016-02-21 00:30:27,508 INFO exited: worker-avi (exit status 1; not expected)
+2016-02-21 00:30:28,209 INFO spawned: 'worker-avi' with pid 184
+2016-02-21 00:30:28,352 INFO success: gavip_avi entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:30:28,353 INFO exited: gavip_avi_jupyter (exit status 1; not expected)
+2016-02-21 00:30:29,278 INFO spawned: 'gavip_avi_jupyter' with pid 189
+2016-02-21 00:30:29,404 INFO exited: gavip_avi (exit status 1; not expected)
+2016-02-21 00:30:30,336 INFO success: gavip_avi_jupyter entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:30:30,346 INFO spawned: 'gavip_avi' with pid 194
+2016-02-21 00:30:30,521 INFO exited: worker-avi (exit status 1; not expected)
+2016-02-21 00:30:31,393 INFO success: gavip_avi entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:30:31,495 INFO exited: gavip_avi_jupyter (exit status 1; not expected)
+2016-02-21 00:30:31,846 INFO spawned: 'worker-avi' with pid 199
+2016-02-21 00:30:31,859 INFO spawned: 'gavip_avi_jupyter' with pid 200
+2016-02-21 00:30:31,973 INFO exited: gavip_avi (exit status 1; not expected)
+2016-02-21 00:30:32,976 INFO success: gavip_avi_jupyter entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:30:32,994 INFO spawned: 'gavip_avi' with pid 209
+2016-02-21 00:30:33,997 INFO success: gavip_avi entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:30:34,639 INFO exited: gavip_avi_jupyter (exit status 1; not expected)
+2016-02-21 00:30:34,664 INFO spawned: 'gavip_avi_jupyter' with pid 214
+2016-02-21 00:30:34,859 INFO success: worker-avi entered RUNNING state, process has stayed up for > than 3 seconds (startsecs)
+2016-02-21 00:30:34,861 INFO exited: worker-avi (exit status 1; not expected)
+2016-02-21 00:30:35,572 INFO spawned: 'worker-avi' with pid 219
+2016-02-21 00:30:35,702 INFO success: gavip_avi_jupyter entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:30:35,721 INFO exited: gavip_avi (exit status 1; not expected)
+2016-02-21 00:30:36,734 INFO spawned: 'gavip_avi' with pid 224
+2016-02-21 00:30:36,962 INFO exited: gavip_avi_jupyter (exit status 1; not expected)
+2016-02-21 00:30:37,734 INFO spawned: 'gavip_avi_jupyter' with pid 229
+2016-02-21 00:30:37,737 INFO success: gavip_avi entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:30:37,928 INFO exited: worker-avi (exit status 1; not expected)
+2016-02-21 00:30:38,941 INFO spawned: 'worker-avi' with pid 234
+2016-02-21 00:30:38,942 INFO success: gavip_avi_jupyter entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:30:39,359 INFO exited: gavip_avi (exit status 1; not expected)
+2016-02-21 00:30:40,153 INFO spawned: 'gavip_avi' with pid 239
+2016-02-21 00:30:40,318 INFO exited: gavip_avi_jupyter (exit status 1; not expected)
+2016-02-21 00:30:41,331 INFO spawned: 'gavip_avi_jupyter' with pid 244
+2016-02-21 00:30:41,333 INFO success: gavip_avi entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:30:41,907 INFO exited: worker-avi (exit status 1; not expected)
+2016-02-21 00:30:42,527 INFO success: gavip_avi_jupyter entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:30:42,648 INFO exited: gavip_avi (exit status 1; not expected)
+2016-02-21 00:30:43,128 INFO spawned: 'gavip_avi' with pid 249
+2016-02-21 00:30:43,228 INFO exited: gavip_avi_jupyter (exit status 1; not expected)
+2016-02-21 00:30:44,162 INFO spawned: 'worker-avi' with pid 254
+2016-02-21 00:30:44,178 INFO spawned: 'gavip_avi_jupyter' with pid 255
+2016-02-21 00:30:44,178 INFO success: gavip_avi entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:30:44,293 INFO exited: gavip_avi (exit status 1; not expected)
+2016-02-21 00:30:45,297 INFO success: gavip_avi_jupyter entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:30:45,310 INFO spawned: 'gavip_avi' with pid 264
+2016-02-21 00:30:46,313 INFO success: gavip_avi entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:30:46,759 INFO exited: gavip_avi_jupyter (exit status 1; not expected)
+2016-02-21 00:30:46,834 INFO spawned: 'gavip_avi_jupyter' with pid 269
+2016-02-21 00:30:46,964 INFO exited: worker-avi (exit status 1; not expected)
+2016-02-21 00:30:47,776 INFO exited: gavip_avi (exit status 1; not expected)
+2016-02-21 00:30:48,109 INFO success: gavip_avi_jupyter entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:30:48,129 INFO spawned: 'gavip_avi' with pid 274
+2016-02-21 00:30:48,191 INFO exited: gavip_avi_jupyter (exit status 1; not expected)
+2016-02-21 00:30:49,014 INFO spawned: 'gavip_avi_jupyter' with pid 279
+2016-02-21 00:30:49,092 INFO exited: gavip_avi (exit status 1; not expected)
+2016-02-21 00:30:50,044 INFO spawned: 'worker-avi' with pid 284
+2016-02-21 00:30:50,045 INFO success: gavip_avi_jupyter entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:30:50,150 INFO spawned: 'gavip_avi' with pid 289
+2016-02-21 00:30:50,154 INFO exited: gavip_avi_jupyter (exit status 1; not expected)
+2016-02-21 00:30:51,167 INFO spawned: 'gavip_avi_jupyter' with pid 294
+2016-02-21 00:30:51,168 INFO success: gavip_avi entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:30:52,172 INFO success: gavip_avi_jupyter entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:30:52,858 INFO exited: gavip_avi (exit status 1; not expected)
+2016-02-21 00:30:52,953 INFO spawned: 'gavip_avi' with pid 299
+2016-02-21 00:30:52,955 INFO exited: worker-avi (exit status 1; not expected)
+2016-02-21 00:30:53,347 INFO gave up: worker-avi entered FATAL state, too many start retries too quickly
+2016-02-21 00:30:53,957 INFO success: gavip_avi entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:30:53,965 INFO exited: gavip_avi_jupyter (exit status 1; not expected)
+2016-02-21 00:30:54,451 INFO spawned: 'gavip_avi_jupyter' with pid 304
+2016-02-21 00:30:54,566 INFO exited: gavip_avi (exit status 1; not expected)
+2016-02-21 00:30:55,441 INFO spawned: 'gavip_avi' with pid 309
+2016-02-21 00:30:55,449 INFO success: gavip_avi_jupyter entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:30:55,527 INFO exited: gavip_avi_jupyter (exit status 1; not expected)
+2016-02-21 00:30:56,428 INFO spawned: 'gavip_avi_jupyter' with pid 314
+2016-02-21 00:30:56,523 INFO success: gavip_avi entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:30:56,524 INFO exited: gavip_avi (exit status 1; not expected)
+2016-02-21 00:30:57,399 INFO spawned: 'gavip_avi' with pid 319
+2016-02-21 00:30:57,503 INFO success: gavip_avi_jupyter entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:30:57,504 INFO exited: gavip_avi_jupyter (exit status 1; not expected)
+2016-02-21 00:30:57,556 INFO spawned: 'gavip_avi_jupyter' with pid 320
+2016-02-21 00:30:58,577 INFO success: gavip_avi_jupyter entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:30:58,578 INFO success: gavip_avi entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:30:59,569 INFO exited: gavip_avi (exit status 1; not expected)
+2016-02-21 00:30:59,598 INFO spawned: 'gavip_avi' with pid 329
+2016-02-21 00:30:59,600 INFO exited: gavip_avi_jupyter (exit status 1; not expected)
+2016-02-21 00:30:59,608 INFO spawned: 'gavip_avi_jupyter' with pid 330
+2016-02-21 00:31:00,612 INFO success: gavip_avi_jupyter entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:31:00,617 INFO success: gavip_avi entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:31:01,474 INFO exited: gavip_avi (exit status 1; not expected)
+2016-02-21 00:31:01,487 INFO spawned: 'gavip_avi' with pid 339
+2016-02-21 00:31:01,583 INFO exited: gavip_avi_jupyter (exit status 1; not expected)
+2016-02-21 00:31:02,450 INFO spawned: 'gavip_avi_jupyter' with pid 344
+2016-02-21 00:31:02,544 INFO success: gavip_avi entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:31:02,545 INFO exited: gavip_avi (exit status 1; not expected)
+2016-02-21 00:31:03,397 INFO spawned: 'gavip_avi' with pid 349
+2016-02-21 00:31:03,473 INFO success: gavip_avi_jupyter entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:31:03,475 INFO exited: gavip_avi_jupyter (exit status 1; not expected)
+2016-02-21 00:31:04,336 INFO spawned: 'gavip_avi_jupyter' with pid 354
+2016-02-21 00:31:04,412 INFO success: gavip_avi entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:31:04,413 INFO exited: gavip_avi (exit status 1; not expected)
+2016-02-21 00:31:05,285 INFO spawned: 'gavip_avi' with pid 359
+2016-02-21 00:31:05,353 INFO success: gavip_avi_jupyter entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:31:05,372 INFO exited: gavip_avi_jupyter (exit status 1; not expected)
+2016-02-21 00:31:06,229 INFO spawned: 'gavip_avi_jupyter' with pid 364
+2016-02-21 00:31:06,308 INFO success: gavip_avi entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:31:06,311 INFO exited: gavip_avi (exit status 1; not expected)
+2016-02-21 00:31:07,174 INFO spawned: 'gavip_avi' with pid 369
+2016-02-21 00:31:07,258 INFO success: gavip_avi_jupyter entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:31:07,286 INFO exited: gavip_avi_jupyter (exit status 1; not expected)
+2016-02-21 00:31:08,124 INFO spawned: 'gavip_avi_jupyter' with pid 374
+2016-02-21 00:31:08,199 INFO success: gavip_avi entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:31:08,201 INFO exited: gavip_avi (exit status 1; not expected)
+2016-02-21 00:31:09,082 INFO spawned: 'gavip_avi' with pid 379
+2016-02-21 00:31:09,151 INFO success: gavip_avi_jupyter entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:31:09,154 INFO exited: gavip_avi_jupyter (exit status 1; not expected)
+2016-02-21 00:31:10,126 INFO spawned: 'gavip_avi_jupyter' with pid 384
+2016-02-21 00:31:10,128 INFO success: gavip_avi entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:31:10,237 INFO exited: gavip_avi (exit status 1; not expected)
+2016-02-21 00:31:11,076 INFO spawned: 'gavip_avi' with pid 389
+2016-02-21 00:31:11,147 INFO success: gavip_avi_jupyter entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2016-02-21 00:31:11,152 INFO exited: gavip_avi_jupyter (exit status 1; not expected)
+2016-02-21 00:31:11,467 INFO spawned: 'gavip_avi_jupyter' with pid 394
+2016-02-21 00:31:11,468 WARN received SIGINT indicating exit request
+2016-02-21 00:31:11,468 INFO waiting for sshd, queue-monitor, redis-server, gavip_avi_jupyter, gavip_avi to die
+2016-02-21 00:31:11,475 INFO stopped: gavip_avi (terminated by SIGTERM)
+2016-02-21 00:31:11,477 INFO stopped: gavip_avi_jupyter (terminated by SIGTERM)
+2016-02-21 00:31:11,503 INFO stopped: queue-monitor (exit status 1)
+2016-02-21 00:31:11,504 INFO stopped: sshd (exit status 0)
+2016-02-21 00:31:12,549 INFO stopped: redis-server (exit status 0)
