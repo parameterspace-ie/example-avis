@@ -25,11 +25,3 @@ class DemoModel(AviJob):
 
     def get_absolute_url(self):
         return "%i/" % self.pk
-
-
-class TestModel(AviJob):
-
-    """This model is used in some pipeline tests"""
-    now = models.CharField(max_length=1000)
-    testfile = models.CharField(max_length=1000)
-    pipeline_task = models.CharField(max_length=1000)

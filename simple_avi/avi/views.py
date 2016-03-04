@@ -29,13 +29,11 @@ from django.core.urlresolvers import reverse
 from django.views.decorators.http import require_http_methods
 
 from avi.models import DemoModel
+
 from gavip_avi.decorators import require_gavip_role  # use this to restrict access to views in an AVI
 ROLES = settings.GAVIP_ROLES
 
-from pipeline.models import AviJobRequest
-
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.WARN)
 
 @require_http_methods(["GET"])
 def main(request):

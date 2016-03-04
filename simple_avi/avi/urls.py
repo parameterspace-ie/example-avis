@@ -5,11 +5,10 @@ These URLs are used by the AVI web-interface.
 @req: REQ-0006
 @comp: AVI Web System
 """
-from avi import views, views_api
-from plugins.urls import plugins_urls
 from django.conf.urls import include, patterns, url
 from rest_framework.urlpatterns import format_suffix_patterns
-
+from plugins.urls import plugins_urls
+from avi import views, views_api
 
 api_urls = [
     # API definitions
@@ -46,7 +45,6 @@ urlpatterns = patterns(
     url(r'^api/',
         include(api_urls,
         namespace='api')),
-
 
     url(r'^job_list/',
         include(plugins_urls,

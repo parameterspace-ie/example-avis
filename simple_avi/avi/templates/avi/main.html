@@ -23,19 +23,19 @@ GAVIP Example AVIs: Simple AVI
     <div class="col-sm-8 col-md-9 col-lg-10">
       <div id="avi_tabcontent" class="tab-content">
 
-        <div role="tabpanel" class="tab-pane fade active in" id="query" aria-labelledby="query-tab">
+        <div role="tabpanel" class="tab-pane fade active in" data-title="SAMPLE" id="query" aria-labelledby="query-tab">
           {% include "avi/panel_enter_query.html" %}
         </div>
         
-        <div role="tabpanel" class="tab-pane fade" id="job" aria-labelledby="job-tab">
+        <div role="tabpanel" class="tab-pane fade" data-title="SAMPLE" id="job" aria-labelledby="job-tab">
           {% include "avi/panel_job_list.html" %}
         </div>
 
-        <div role="tabpanel" class="tab-pane fade" id="result" aria-labelledby="result-tab">
+        <div role="tabpanel" class="tab-pane fade" data-title="SAMPLE" id="result" aria-labelledby="result-tab">
           {% include "avi/panel_result.html" %}
         </div>
 
-        <div role="tabpanel" class="tab-pane fade" id="help" aria-labelledby="help-tab">
+        <div role="tabpanel" class="tab-pane fade" data-title="SAMPLE" id="help" aria-labelledby="help-tab">
           {% include "avi/panel_help.html" %}
         </div>
 
@@ -43,5 +43,6 @@ GAVIP Example AVIs: Simple AVI
     </div>
   </div>
 </div>
+
 
 {% endblock avi_content %}

@@ -14,7 +14,6 @@ import os
 import json
 import logging
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.WARN)
 
 
 class DemoModelList(generics.ListCreateAPIView):
@@ -23,7 +22,7 @@ class DemoModelList(generics.ListCreateAPIView):
     renderer_classes = (JSONRenderer, AdminRenderer)
 
 
-class DemoModelDetail(generics.RetrieveUpdateDestroyAPIView):
+class DemoModelDetail(generics.RetrieveDestroyAPIView):
     queryset = DemoModel.objects.all()
     serializer_class = DemoModelSerializer
     renderer_classes = (JSONRenderer, AdminRenderer)

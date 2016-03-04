@@ -1,8 +1,3 @@
-"""
-@test: CU9-GAVIP-SYS-1-8
-@test: CU9-GAVIP-SYS-5-2
-"""
-
 from django.core.urlresolvers import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
@@ -20,6 +15,35 @@ data = {'query': Query,
 
 class DemoModelAPITest(APITestCase):
 
+    """
+    Testing the API for AVI framework
+
+    @test: CU9-GAVIP-SYS-5-2
+
+    @description
+    In this test the API in AVI framework is queried through the command line to ensure AVI service
+catalogue is provided.
+
+    @input
+    None
+
+    @output
+    AVI service catalogue returned in JSON format.
+
+    @purpose
+    The purpose of this test is to ensure the AVI information can be queried by a developer.
+
+    @items
+    AVI framework
+
+    @pass_criteria
+    AVI service catalogue returned in JSON format.
+
+    @procedure
+    A testing AVI is used to create several mock AVI jobs
+    It is checked that a user can get information about those jobs through the API 
+    """
+
     def setUp(self):
         with open('/data/output/foobar.out', 'a') as f:
             f.write('{"foobar": [[1.0, 0.0], [1.1, 0.1]]}')
@@ -35,9 +59,9 @@ class DemoModelAPITest(APITestCase):
         os.remove('/data/output/foobar.out')
 
     def test_get_demomodel(self):
-        """
-        Checking api list of demomodels
-        """
+        # """
+        # Checking api list of demomodels
+        # """
 
         url = reverse('avi:api:demomodel-list')
 
@@ -49,9 +73,9 @@ class DemoModelAPITest(APITestCase):
         self.assertIn('barfoo.out', response.content)
 
     def test_create_demomodel(self):
-        """
-        Creating a new DemoModel object.
-        """
+        # """
+        # Creating a new DemoModel object.
+        # """
 
         url = reverse('avi:api:demomodel-list')
 
@@ -67,9 +91,9 @@ class DemoModelAPITest(APITestCase):
         self.assertIn('foo.out', response.content)
 
     def test_demomodel_detail_api(self):
-        """
-        Checking api detail of one demomodel.
-        """
+        # """
+        # Checking api detail of one demomodel.
+        # """
 
         url = reverse('avi:api:demomodel-detail', args=(1,))
 
@@ -81,9 +105,9 @@ class DemoModelAPITest(APITestCase):
         self.assertNotIn('barfoo.out', response.content)
 
     def test_demomodel_detail_delete(self):
-        """
-        Deleting a DemoModel object.
-        """
+        # """
+        # Deleting a DemoModel object.
+        # """
 
         self.assertEqual(DemoModel.objects.count(), 2)
         url = reverse('avi:api:demomodel-detail', args=(1,))
@@ -94,9 +118,9 @@ class DemoModelAPITest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
     def test_get_job_data(self):
-        """
-        Checking job data api
-        """
+        # """
+        # Checking job data api
+        # """
 
         url = reverse('avi:api:api-job-data', args=(1,))
 
@@ -106,9 +130,9 @@ class DemoModelAPITest(APITestCase):
         # self.assertIn('[2.0,20263885.09694212]', response.content)
 
     def test_get_view_jobs(self):
-        """
-        Checking view jobs api
-        """
+        # """
+        # Checking view jobs api
+        # """
 
         url = reverse('avi:api:api-view-jobs')
 
@@ -123,9 +147,9 @@ class DemoModelAPITest(APITestCase):
         #               response.content)
 
     def test_get_view_jobs_detail(self):
-        """
-        Checking view jobs detail api
-        """
+        # """
+        # Checking view jobs detail api
+        # """
 
         url = reverse('avi:api:api-view-jobs-detail', args=(1,))
 
