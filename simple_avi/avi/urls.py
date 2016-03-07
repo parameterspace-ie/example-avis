@@ -66,8 +66,4 @@ urlpatterns = patterns(
     url(r'^public/result/(?P<job_id>[0-9]+)/(?P<celery_task_id>[a-z0-9-]+)/$',
         views.job_result_public,
         name='job_result_public'),
-
-    url(r'^view_for_checking_auth/$',
-        views.view_for_checking_auth,
-        name='view_for_checking_auth'),
 )

@@ -97,8 +97,3 @@ def job_result_public(request, job_id, celery_task_id):
     else:
         raise ObjectDoesNotExist("Invalid public URL")
 
-
-@require_gavip_role([ROLES.OP])
-def view_for_checking_auth(request):
-    """ A view for testing avi Authorization"""
-    return render(request, 'avi/view_for_checking_auth.html')
