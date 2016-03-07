@@ -244,7 +244,7 @@ once it is deployed in GAVIP.
         self.job = DemoModel.objects.get()
         response = self.client.get(reverse('avi:job_data',
                                            args=(self.job.id,)))
-        self.assertIn('{"foobar": [[1.0, 0.0], [1.1, 0.1]]}',
+        self.assertIn('{"foobar":[[1.0,0.0],[1.1,0.1]]}',
                       response.content)
 
     def test_job_result_page_recieves_expected_context(self):
