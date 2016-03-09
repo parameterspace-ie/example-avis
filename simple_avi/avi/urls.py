@@ -39,8 +39,8 @@ api_urls = format_suffix_patterns(api_urls)
 urlpatterns = patterns(
     '',
     url(r'^$',
-        views.main,
-        name='main'),
+        views.index,
+        name='index'),
 
     url(r'^api/',
         include(api_urls,

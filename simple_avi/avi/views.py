@@ -36,7 +36,7 @@ ROLES = settings.GAVIP_ROLES
 logger = logging.getLogger(__name__)
 
 @require_http_methods(["GET"])
-def main(request):
+def index(request):
     """
     This view is the first view that the user sees
     We send a dictionary called a context, which contains 
@@ -48,7 +48,7 @@ def main(request):
         "show_welcome": request.session.get('show_welcome', True)
     }
     request.session['show_welcome'] = False
-    return render(request, 'avi/main.html', context)
+    return render(request, 'avi/index.html', context)
 
 
 @require_http_methods(["POST"])
