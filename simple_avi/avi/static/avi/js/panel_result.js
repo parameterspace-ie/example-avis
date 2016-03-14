@@ -34,12 +34,12 @@ function init_chart(data_loader){
             text: 'Sample GACS request'
         },
         subtitle: {
-            text: 'Solar mass versus Orbit period'
+            text: 'G Magnitude vs distance'
         },
         xAxis: {
             title: {
                 enabled: true,
-                text: 'Solar Mass'
+                text: 'Distance'
             },
             startOnTick: true,
             endOnTick: true,
@@ -49,7 +49,7 @@ function init_chart(data_loader){
             startOnTick: true,
             type: 'logarithmic',
             title: {
-                text: 'Orbital Period'
+                text: 'G Magnitude'
             }
         },
         exporting: {

@@ -24,4 +24,5 @@ class CurrentTasksTest(TestCase):
                                              outputFile=outputFile)
 
         self.assertTrue(os.path.isfile('/data/output/dummyData_test.vot') and
-                        os.path.isfile('/data/output/simulatedData_test.vot'))
+                        os.path.isfile('/data/output/simulatedData_test.vot') and
+                        os.path.isfile('/data/output/test'))

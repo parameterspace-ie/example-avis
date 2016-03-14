@@ -90,11 +90,11 @@ class ProcessData(AviTask):
         votable = parse(self.input().path)
         data_arr = votable.get_first_table().array
         # Extract plot data
-        mass = data_arr['mass']
-        orbit_period = data_arr['orbit_period']
+        dist = data_arr['dist']
+        phot_g_mean_mag = data_arr['phot_g_mean_mag']
         
         # highcharts_data = zip(list_a, list_b)
-        highcharts_data = {"data": map(lambda x,y:[x,y], mass, orbit_period)}
+        highcharts_data = {"data": map(lambda x,y:[x,y], dist, phot_g_mean_mag)}
 
         with open(self.output().path, 'w') as out:
             json.dump(highcharts_data, out)
