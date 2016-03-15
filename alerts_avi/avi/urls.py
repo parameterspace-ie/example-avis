@@ -7,11 +7,11 @@ from django.conf.urls import include, patterns, url
 from rest_framework.urlpatterns import format_suffix_patterns
 
 
-api_urls = [
-    # API definitions
+urlpatterns = patterns(
+    '',
     url(r'^$',
         views_api.AlertsJobList.as_view(),
-        name='alertsjob-list'),
+        name='index'),
 
     url(r'^(?P<pk>[0-9]+)/$',
         views_api.AlertsJobDetail.as_view(),
@@ -29,42 +29,12 @@ api_urls = [
         views_api.ViewJobsListDetail.as_view(),
         name='api-view-jobs-detail'),
 
-]
-
-api_urls = format_suffix_patterns(api_urls)
-
-urlpatterns = patterns(
-    '',
-    url(r'^$',
-        views.main,
-        name='main'),
-
-    url(r'^api/',
-        include(api_urls,
-        namespace='api')),
-
-
     url(r'^job_list/',
-        include(plugins_urls,
-        namespace='plugins')),
-
-    url(r'^run_query/$',
-        views.run_query,
-        name='run_query'),
-
-    # url(r'^job_data/(?P<job_id>[0-9]+)/$',
-    #     views.job_data,
-    #     name='job_data'),
+        include(plugins_urls, namespace='plugins')),
 
     url(r'^result/(?P<job_id>[0-9]+)/$',
         views.job_result,
         name='job_result'),
-
-    url(r'^public/result/(?P<job_id>[0-9]+)/(?P<celery_task_id>[a-z0-9-]+)/$',
-        views.job_result_public,
-        name='job_result_public'),
-
-    url(r'^view_for_checking_auth/$',
-        views.view_for_checking_auth,
-        name='view_for_checking_auth'),
 )
+
+urlpatterns = format_suffix_patterns(urlpatterns)

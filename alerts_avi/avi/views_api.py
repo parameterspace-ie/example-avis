@@ -6,7 +6,6 @@ from rest_framework.renderers import JSONRenderer, AdminRenderer
 from django.shortcuts import get_object_or_404
 from django.conf import settings
 
-from pipeline import manager
 from avi.models import AlertsJob
 from avi.serializers import AlertsJobSerializer, ViewJobsSerializer
 
