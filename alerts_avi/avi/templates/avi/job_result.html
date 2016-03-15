@@ -1,0 +1,32 @@
+{% extends "base/base.html" %}
+
+{% block avi_title %}
+GAVIP Example AVIs: Alerts AVI
+{% endblock avi_title %}
+
+{% block avi_content %}
+{% load staticfiles %}
+<script type="text/javascript" src="{% static 'datatables/datatables.min.js' %}"></script>
+
+<div class="container-fluid">  
+  <div class="row">
+    <div>
+      <p>This page contains the results of the Job. It is a plot of the coordinates of the Gaia Science alerts. The colour corresponds to the classification of object (legend to be inserted) and the size of the dot is proportional to the magnitude of the object.
+      </p>
+    </div>
+    <div id="fig"></div>
+  </div>
+</div>
+
+{% load staticfiles %}
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="https://mpld3.github.io/js/mpld3.v0.2.js"></script>
+
+{% if job_data %}
+    <script>
+    var fig = {{ job_data|safe }};
+    mpld3.draw_figure("fig", fig);
+    </script>
+{% endif %}
+
+{% endblock avi_content %}

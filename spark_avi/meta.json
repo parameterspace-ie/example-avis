@@ -1,0 +1,10 @@
+{
+    "details": {
+        "title": "Spark AVI",
+        "short_desc": "Example of running a Spark job from an AVI pipeline.",
+        "author": "Derek O'Callaghan",
+        "purpose": "Demonstrates alternative to running jobs within AVI containers."
+    },
+    "tags": [
+    ]
+}

@@ -6,9 +6,8 @@ from rest_framework.renderers import JSONRenderer, AdminRenderer
 from django.shortcuts import get_object_or_404
 from django.conf import settings
 
-from pipeline import manager
-from avi.models import DemoModel
-from avi.serializers import DemoModelSerializer, ViewJobsSerializer
+from avi.models import AlertsJob
+from avi.serializers import AlertsJobSerializer, ViewJobsSerializer
 
 import os
 import json
@@ -16,22 +15,22 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class DemoModelList(generics.ListCreateAPIView):
-    queryset = DemoModel.objects.all()
-    serializer_class = DemoModelSerializer
+class AlertsJobList(generics.ListCreateAPIView):
+    queryset = AlertsJob.objects.all()
+    serializer_class = AlertsJobSerializer
     renderer_classes = (JSONRenderer, AdminRenderer)
 
 
-class DemoModelDetail(generics.RetrieveDestroyAPIView):
-    queryset = DemoModel.objects.all()
-    serializer_class = DemoModelSerializer
+class AlertsJobDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = AlertsJob.objects.all()
+    serializer_class = AlertsJobSerializer
     renderer_classes = (JSONRenderer, AdminRenderer)
 
 
 class JobData(APIView):
 
     def get(self, request, job_id):
-        job = get_object_or_404(DemoModel, request_id=job_id)
+        job = get_object_or_404(AlertsJob, request_id=job_id)
         file_path = os.path.join(settings.OUTPUT_PATH, job.outputFile)
         with open(file_path, 'r') as outFile:
             job_data = json.load(outFile)
@@ -39,12 +38,12 @@ class JobData(APIView):
 
 
 class ViewJobsList(generics.ListAPIView):
-    queryset = DemoModel.objects.all()
+    queryset = AlertsJob.objects.all()
     serializer_class = ViewJobsSerializer
     renderer_classes = (JSONRenderer, AdminRenderer)
 
 
 class ViewJobsListDetail(generics.RetrieveAPIView):
-    queryset = DemoModel.objects.all()
+    queryset = AlertsJob.objects.all()
     serializer_class = ViewJobsSerializer
     renderer_classes = (JSONRenderer, AdminRenderer)

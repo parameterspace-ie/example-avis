@@ -11,7 +11,7 @@
     <div class="form-group">
         <label for="query">GACS-Dev VOTable query</label>
         <input class="form-control" id="query" name="query" placeholder="Enter your query here" required=true
-        value="SELECT DISTANCE(POINT('ICRS',alpha,delta), POINT('ICRS',266.41683,-29.00781)) AS dist, * FROM public.g10_mw  WHERE 1=CONTAINS(POINT('ICRS',alpha,delta),CIRCLE('ICRS',266.41683,-29.00781, 0.08333333)) ORDER BY dist ASC">
+        value="SELECT DISTANCE(POINT('ICRS',ra,dec), POINT('ICRS',266.41683,-29.00781)) AS dist, * FROM public.gaia_source  WHERE 1=CONTAINS(POINT('ICRS',ra,dec),CIRCLE('ICRS',266.41683,-29.00781, 0.08333333)) ORDER BY dist ASC">
         <label for="outfile">Output file</label>
         <input class="form-control" id="outfile" name="outfile" placeholder="Enter your output file here" required=true
         value="SampleFile_{{millis}}.out">

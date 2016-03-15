@@ -1,6 +1,4 @@
 """
-@test: CU9-GAVIP-SYS-5-3
-@test: CU9-GAVIP-SYS-5-4
 @test: CU9-GAVIP-SYS-5-5
 @test: CU9-GAVIP-SYS-5-7
 """
@@ -18,6 +16,33 @@ import os
 
 
 class ModelAVIViewsTestcase(TestCase):
+    """
+    Testing the simple AVI views
+
+    @test: CU9-GAVIP-SYS-5-8
+
+    @description
+    In this test an the views created by a developer for an AVI are checked to see if they are working as expected.
+
+    @input
+    None
+
+    @output
+    None
+
+    @purpose
+    The purpose of this test is to ensure that AVI developers can create their own page views with html, js and css styling.
+
+    @items
+    AVI framework
+
+    @pass_criteria
+    Views work as expected.
+
+    @procedure
+    A testing AVI with custom views is used
+    It is tested that the correct results are returned
+    """
 
     def setUp(self):
         settings.STANDALONE = True
@@ -67,7 +92,7 @@ class ModelAVIViewsTestcase(TestCase):
         self.assertTemplateUsed(response,
                                 'avi/panel_enter_query.html')
         self.assertTemplateUsed(response,
-                                'plugins/panel_job_list.html')
+                                'avi/panel_job_list.html')
         self.assertTemplateUsed(response,
                                 'avi/panel_result.html')
         self.assertTemplateUsed(response,
@@ -78,13 +103,65 @@ class ModelAVIViewsTestcase(TestCase):
         self.assertIn('SampleFile_%s.out' % response.context['millis'],
                       response.content)
 
-    # This needs a redis connection to work
-    # Not gonna happen for a test
+
+class ModelAVIQueryViewsTestcase(TestCase):
+
+    """
+    Testing custom query for the simple AVI
+
+    @test: CU9-GAVIP-SYS-5-7
+
+    @description
+    In this test an AVI user supplies custom parameters to the AVI once it is deployed in GAVIP.
+
+    @input
+    Custom parameters
+
+    @output
+    Expected results
+
+    @purpose
+    The purpose of this test is to ensure that AVI users can supply custom parameters to the AVI
+once it is deployed in GAVIP.
+
+    @items
+    AVI framework
+
+    @pass_criteria
+    Custom parameters are supplied to the AVI and the expected outcome is reached.
+
+    @procedure
+    A testing AVI is used to send a custom query
+    It is tested that the correct results are returned
+    """
+
+    def setUp(self):
+        settings.STANDALONE = True
+
+        with open('/data/output/outputfile', 'a') as f:
+            f.write('{"foobar": [[1.0, 0.0], [1.1, 0.1]]}')
+
+        job_id = DemoModel.objects.create(
+            query='query',
+            outputFile='outputfile'
+        ).id
+        # After the object is created, celery will immediately
+        # start processing the job. Changing it's data
+        # So get it AGAIN after creation.
+        self.job = DemoModel.objects.get(id=job_id)
+
+    def tearDown(self):
+        settings.STANDALONE = True
+
+        os.remove('/data/output/outputfile')
+
+        DemoModel.objects.all().delete()
+
 
     def test_run_query_page_get_ok_200(self):
         # /avi/run_query/
 
-        query = "SELECT DISTANCE(POINT('ICRS',alpha,delta), POINT('ICRS',266.41683,-29.00781)) AS dist, * FROM public.g10_mw  WHERE 1=CONTAINS(POINT('ICRS',alpha,delta),CIRCLE('ICRS',266.41683,-29.00781, 0.08333333)) ORDER BY dist ASC"
+        query = "SELECT DISTANCE(POINT('ICRS',ra,dec), POINT('ICRS',266.41683,-29.00781)) AS dist, * FROM public.gaia_source  WHERE 1=CONTAINS(POINT('ICRS',ra,dec),CIRCLE('ICRS',266.41683,-29.00781, 0.08333333)) ORDER BY dist ASC"
         outputFile = 'SampleFile_1451901076099.out'
 
         response = self.client.post(reverse('avi:run_query'),
@@ -109,7 +186,7 @@ class ModelAVIViewsTestcase(TestCase):
         self.job = DemoModel.objects.get()
 
         # /avi/job_list/
-        resp_job_page = self.client.get(reverse('avi:plugins:job_list'))
+        resp_job_page = self.client.get(reverse('avi:plugins:jobrequest_list'))
         self.assertEqual(resp_job_page.status_code, 200)
         # /avi/job_data/###/
         resp_job_data = self.client.get(reverse('avi:job_data',
@@ -124,13 +201,13 @@ class ModelAVIViewsTestcase(TestCase):
     def test_job_list_page_recieves_expected_context(self):
 
         # /avi/job_list/
-        resp_job_page = self.client.get(reverse('avi:plugins:job_list'))
+        resp_job_page = self.client.get(reverse('avi:plugins:jobrequest_list'))
         self.assertIsNone(resp_job_page.context)
 
     def test_job_list_page_returns_expected_content(self):
 
         # /avi/job_list/
-        resp_job_page = self.client.get(reverse('avi:plugins:job_list'))
+        resp_job_page = self.client.get(reverse('avi:plugins:jobrequest_list'))
 
         # No templates used to render the response
 
@@ -143,9 +220,9 @@ class ModelAVIViewsTestcase(TestCase):
         self.assertIn('%s' % self.job.request_id,
                       resp_job_page.content)
 
-        reformatted_date = self.job.request.created.strftime('%m/%d/%Y %-I')
-        self.assertIn('%s' % reformatted_date,
-                      resp_job_page.content)
+        # reformatted_date = self.job.request.created.strftime('%m/%d/%Y %-I')
+        # self.assertIn('%s' % reformatted_date,
+        #               resp_job_page.content)
 
         self.assertIn('%s' % self.job.request.pipeline_state.progress,
                       resp_job_page.content)
@@ -167,7 +244,7 @@ class ModelAVIViewsTestcase(TestCase):
         self.job = DemoModel.objects.get()
         response = self.client.get(reverse('avi:job_data',
                                            args=(self.job.id,)))
-        self.assertIn('{"foobar": [[1.0, 0.0], [1.1, 0.1]]}',
+        self.assertIn('{"foobar":[[1.0,0.0],[1.1,0.1]]}',
                       response.content)
 
     def test_job_result_page_recieves_expected_context(self):

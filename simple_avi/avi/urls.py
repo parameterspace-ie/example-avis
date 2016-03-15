@@ -5,11 +5,10 @@ These URLs are used by the AVI web-interface.
 @req: REQ-0006
 @comp: AVI Web System
 """
-from avi import views, views_api
-from plugins.urls import plugins_urls
 from django.conf.urls import include, patterns, url
 from rest_framework.urlpatterns import format_suffix_patterns
-
+from plugins.urls import plugins_urls
+from avi import views, views_api
 
 api_urls = [
     # API definitions
@@ -40,13 +39,12 @@ api_urls = format_suffix_patterns(api_urls)
 urlpatterns = patterns(
     '',
     url(r'^$',
-        views.main,
-        name='main'),
+        views.index,
+        name='index'),
 
     url(r'^api/',
         include(api_urls,
         namespace='api')),
-
 
     url(r'^job_list/',
         include(plugins_urls,
@@ -56,8 +54,9 @@ urlpatterns = patterns(
         views.run_query,
         name='run_query'),
 
+    # Same as api-job-data above
     url(r'^job_data/(?P<job_id>[0-9]+)/$',
-        views.job_data,
+        views_api.JobData.as_view(),
         name='job_data'),
 
     url(r'^result/(?P<job_id>[0-9]+)/$',
@@ -67,8 +66,4 @@ urlpatterns = patterns(
     url(r'^public/result/(?P<job_id>[0-9]+)/(?P<celery_task_id>[a-z0-9-]+)/$',
         views.job_result_public,
         name='job_result_public'),
-
-    url(r'^view_for_checking_auth/$',
-        views.view_for_checking_auth,
-        name='view_for_checking_auth'),
 )

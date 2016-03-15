@@ -29,47 +29,6 @@ import services.gacs as svc_gacs
 from astropy.io.votable import parse
 
 
-# Testing classes
-# --
-class EmptyTask(AviTask):
-    """AviTask with no unique methods or parameters"""
-    pass
-
-class TaskWithParameter(AviTask):
-    """AviTask with one AviParameter"""
-    x = AviParameter()
-
-class TaskAppendToFile(AviTask):
-    """AviTask which will create a file and append some text"""
-    now = AviParameter()
-    testfile = AviParameter()
-
-    # If you don't have an output file, you need to tell luigi how
-    # to figure out if it's complete or not!
-    def output(self):
-        return AviLocalTarget(self.testfile)
-
-    def run(self):
-        with open(self.output().path, 'w') as f:
-            f.write(self.now + '\n')
-
-class TaskOutput(TaskAppendToFile):
-    def output(self):
-        return AviLocalTarget(self.testfile)
-
-class TaskDependent(TaskOutput):
-    def requires(self):
-        return self.task_dependency(TestTask, [])
-
-class TestTask(AviTask):
-    def output(self):
-        return AviLocalTarget('/data/output/testtask.txt')
-
-    def run(self):
-        with self.output().open('w') as f:
-            f.write('Test')
-# --
-
 class DummyTask(AviTask):
     """
     This is a sample task which has no dependencies. It only exists to further demonstrate dependency creation.
@@ -131,11 +90,11 @@ class ProcessData(AviTask):
         votable = parse(self.input().path)
         data_arr = votable.get_first_table().array
         # Extract plot data
-        mass = data_arr['mass']
-        orbit_period = data_arr['orbit_period']
+        dist = data_arr['dist']
+        phot_g_mean_mag = data_arr['phot_g_mean_mag']
         
         # highcharts_data = zip(list_a, list_b)
-        highcharts_data = {"data": map(lambda x,y:[x,y], mass, orbit_period)}
+        highcharts_data = {"data": map(lambda x,y:[x,y], dist, phot_g_mean_mag)}
 
         with open(self.output().path, 'w') as out:
             json.dump(highcharts_data, out)

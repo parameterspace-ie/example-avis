@@ -29,16 +29,14 @@ from django.core.urlresolvers import reverse
 from django.views.decorators.http import require_http_methods
 
 from avi.models import DemoModel
+
 from gavip_avi.decorators import require_gavip_role  # use this to restrict access to views in an AVI
 ROLES = settings.GAVIP_ROLES
 
-from pipeline.models import AviJobRequest
-
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.WARN)
 
 @require_http_methods(["GET"])
-def main(request):
+def index(request):
     """
     This view is the first view that the user sees
     We send a dictionary called a context, which contains 
@@ -50,7 +48,7 @@ def main(request):
         "show_welcome": request.session.get('show_welcome', True)
     }
     request.session['show_welcome'] = False
-    return render(request, 'avi/main.html', context)
+    return render(request, 'avi/index.html', context)
 
 
 @require_http_methods(["POST"])
@@ -82,14 +80,6 @@ def run_query(request):
     return JsonResponse({})
 
 
-def job_data(request, job_id):
-    job = get_object_or_404(DemoModel, request_id=job_id)
-    file_path = os.path.join(settings.OUTPUT_PATH, job.outputFile)
-    with open(file_path, 'r') as outFile:
-        job_data = json.load(outFile)
-    return JsonResponse(job_data)
-
-
 @require_http_methods(["GET"])
 def job_result(request, job_id):
     return render(request, 'avi/job_result.html', {'job_id': job_id})
@@ -107,8 +97,3 @@ def job_result_public(request, job_id, celery_task_id):
     else:
         raise ObjectDoesNotExist("Invalid public URL")
 
-
-@require_gavip_role([ROLES.OP])
-def view_for_checking_auth(request):
-    """ A view for testing avi Authorization"""
-    return render(request, 'avi/view_for_checking_auth.html')
