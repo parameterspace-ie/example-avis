@@ -7,6 +7,7 @@ class AlertsJobSerializer(serializers.ModelSerializer):
     AviJobRequest and PipeState included.
     """
     url = serializers.CharField(source='get_absolute_url', read_only=True)
+    result_path = serializers.CharField(source='request.result_path')
 
     class Meta:
         model = AlertsJob
