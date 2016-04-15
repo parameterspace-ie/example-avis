@@ -11,19 +11,8 @@
         <li>Demonstrates prototype of running (DPAC) Java tools in AVI pipeline, using the <a href="http://wiki.cosmos.esa.int/gaia-dpac/index.php/CU8:_Ulysses">CU8 Ulysses BP/RP Simulator</a>.</li>
         <li>Analysis of GACS-Dev IGSL source samples that were originally in OGLE-III.</li>
       </ol>
-      <li><strong>Note: this AVI should only be used with the repositories.gavip.science/ps_avi_java:0.2.1 container template image, with the Ulysses tool 
-      being mounted into /opt/ulysses as follows:</strong>
-      <p>
-      <pre>
-docker run \
--e STANDALONE=True \
--v ~/avis/multiple_pipelines_avi/avi:/opt/gavip_avi/avi \
--v ~/avis/multiple_pipelines_avi/data:/data \
--v ~/dpac_tools/ulysses:/opt/ulysses \
--p 10000:10000 -p 10022:22 -p 5555:5555 -p 18888:8888 -p 9002:9002 \
--t repositories.gavip.science/ps_java_python:0.2.1 \
-/opt/conda/bin/supervisord</pre>
-      </p>
+      <li><strong>Note: this AVI should only be used with the latest repositories.gavip.science/ps_avi_java_7 container template image, with the Ulysses tool 
+              being mounted into /opt/ulysses as follows. See the <a href="http://docs.gavip.science/developer_guide.html#running-java-tools-within-an-avi-pipeline" target="_blank">Developer Guide</a> for details.</strong>
     </ul>
     <p>Below is a list of some of the important files in this AVI:</p>
 
