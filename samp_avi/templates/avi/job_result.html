@@ -1,0 +1,25 @@
+{% extends "base/base.html" %}
+
+{% block avi_title %}
+GAVIP Example AVIs: Simple AVI (Result {{job_id}})
+{% endblock avi_title %}
+
+{% block avi_content %}
+{% load staticfiles %}
+<link href="{% static 'avi/css/avi.css' %}" rel="stylesheet" type="text/css">
+
+<div class="container-fluid">
+  
+  <div class="row navoffset">
+    <div class="col-xs-12">
+      {% include "avi/panel_result.html" %}
+    </div>
+  </div>
+</div>
+
+<script>
+  var data_url = "/avi/job_data/" + {{job_id}};
+  view_result(data_url);
+</script>
+
+{% endblock avi_content %}

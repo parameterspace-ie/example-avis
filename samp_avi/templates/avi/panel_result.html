@@ -1,0 +1,27 @@
+<div class="panel panel-info">
+  <div class="panel-heading">
+    Result view help
+  </div>
+  <div class="panel-body">
+      <p>This is a panel which renders one of the job results.</p>
+
+      <p>Select an area of the plot to zoom in on it.</p>
+
+      <ul>
+        <li> The data is rendered using highcharts.</li>
+        <li> The pipeline creates a large JSON object using two columns from the resulting VOTable from the query.</li>
+        <li>When a result is accessed, javascript makes a call to an AVI endpoint which returns the JSON data for a particular job. </li>
+        <li>This data is then dynamically loaded in to the highchart object.</li>
+      </ul>
+
+      <strong>TODO:</strong> <p>Figure out the damn units here</p>
+  </div>
+</div>
+
+<div id="container">
+</div>
+
+{% load staticfiles %}
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="http://code.highcharts.com/modules/exporting.js"></script>
+<script src="{% static 'avi/js/panel_result.js' %}"></script>
