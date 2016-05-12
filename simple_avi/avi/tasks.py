@@ -114,7 +114,7 @@ class ProcessData(AviTask):
         analysis_context = {'gacs_dfdescription': gaiadf.describe().to_html(classes='table table-striped table-bordered table-hover'),
                             'pandas_profiling': profile.html}
 
-        logger.debug('analysis_context %s' % analysis_context)
+        # logger.debug('analysis_context %s' % analysis_context)
         # JSON will be the context used for the template
         with open(self.output().path, 'wb') as out:
             json.dump(analysis_context, out)

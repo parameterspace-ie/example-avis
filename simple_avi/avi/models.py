@@ -6,6 +6,7 @@ Django models used by the AVI pipeline
 @comp: AVI Web System
 """
 
+import datetime
 from django.db import models
 from pipeline.models import AviJob, AviJobRequest
 
