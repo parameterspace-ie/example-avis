@@ -7,7 +7,7 @@ Django models used by the AVI pipeline
 """
 
 from django.db import models
-from pipeline.models import AviJob
+from pipeline.models import AviJob, AviJobRequest
 
 
 class DemoModel(AviJob):
