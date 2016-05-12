@@ -274,6 +274,5 @@ once it is deployed in GAVIP.
         self.assertIn('GAVIP Example AVIs: Simple AVI'
                       + ' (Result %s)' % self.job.id,
                       response.content)
-        self.assertIn('var data_url = "/avi/job_data/"'
-                      + ' + %s;' % self.job.id,
+        self.assertIn('Result view help',
                       response.content)
