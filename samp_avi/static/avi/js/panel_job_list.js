@@ -25,7 +25,7 @@ function setup_jobtable(){
     jobTable = $('#job_table').DataTable({
         "ajax": {
             "url": "/avi/job_list/.json", 
-            "dataSrc": ""
+            "dataSrc": "results"
         },
         "columns": [
             { "data": "job_id" },
@@ -94,10 +94,9 @@ function generate_progress_bar(job_percentage){
 function bind_result_buttons(){
     $('button[name="result_view_btn"]').parent().click(function(){
         var row = get_row(this);
-        var data_url = "/avi/result/" + row.data().job_id;
-        window.location = data_url;
-        // $('#result-tab').tab('show');
-        // view_result(data_url);
+        var data_url = "/avi/job_data/" + row.data().job_id;
+        $('#result-tab').tab('show');
+        view_result(data_url);
     })
     $('button[name="exception_view_button"]').parent().click(function(){
         var row = get_row(this);

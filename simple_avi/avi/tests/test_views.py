@@ -67,11 +67,11 @@ class ModelAVIViewsTestcase(TestCase):
         DemoModel.objects.all().delete()
 
     def test_main_page_is_ok_200(self):
-        response = self.client.get(reverse('avi:main'))
+        response = self.client.get(reverse('avi:index'))
         self.assertEqual(response.status_code, 200)
 
     def test_main_page_recieves_expected_context(self):
-        response = self.client.get(reverse('avi:main'))
+        response = self.client.get(reverse('avi:index'))
 
         self.assertIn('millis',
                       response.context)
@@ -79,10 +79,10 @@ class ModelAVIViewsTestcase(TestCase):
                       response.context)
 
     def test_main_page_returns_expected_content(self):
-        response = self.client.get(reverse('avi:main'))
+        response = self.client.get(reverse('avi:index'))
 
         self.assertTemplateUsed(response,
-                                'avi/main.html')
+                                'avi/index.html')
         self.assertTemplateUsed(response,
                                 'base/base.html')
         self.assertTemplateUsed(response,
@@ -274,6 +274,5 @@ once it is deployed in GAVIP.
         self.assertIn('GAVIP Example AVIs: Simple AVI'
                       + ' (Result %s)' % self.job.id,
                       response.content)
-        self.assertIn('var data_url = "/avi/job_data/"'
-                      + ' + %s;' % self.job.id,
+        self.assertIn('Result view help',
                       response.content)
