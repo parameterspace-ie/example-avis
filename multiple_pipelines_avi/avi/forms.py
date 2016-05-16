@@ -16,7 +16,7 @@ class NoisySpectraJobForm(ModelForm):
     """
     class Meta:
         model = NoisySpectraJob
-        exclude = ['request']
+        exclude = ['request', 'expected_runtime']
         
 
 class GacsIgslAnalysisJobForm(ModelForm):
@@ -26,5 +26,5 @@ class GacsIgslAnalysisJobForm(ModelForm):
     """
     class Meta:
         model = GacsIgslAnalysisJob
-        exclude = ['request']
+        exclude = ['request', 'expected_runtime']
         
