@@ -79,8 +79,7 @@ def run_query(request):
 
     job = DemoModel.objects.create(
         query=adql_query,
-        outputFile=outfile,
-        resources_ram_mb=ram_allocation
+        outputFile=outfile
     )
     return JsonResponse({})
 
