@@ -7,6 +7,7 @@ class SparkJobSerializer(serializers.ModelSerializer):
     AviJobRequest and PipeState included.
     """
     url = serializers.CharField(source='get_absolute_url', read_only=True)
+    expected_runtime = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = SparkJob
