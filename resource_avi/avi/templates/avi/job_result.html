@@ -1,0 +1,34 @@
+{% extends "base/base.html" %}
+
+{% block avi_title %}
+GAVIP Example AVIs: Simple AVI (Result {{job_id}})
+{% endblock avi_title %}
+
+{% block avi_content %}
+{% load staticfiles %}
+<link href="{% static 'avi/css/avi.css' %}" rel="stylesheet" type="text/css">
+
+<div class="container-fluid">
+ <div class="col-sm-8 col-md-9 col-lg-10">
+   <div class="container-fluid">
+       
+     <div class="row navoffset">
+       <div class="col-xs-12">
+         {% include "avi/panel_result.html" %}
+       </div>
+     </div>
+     <div class="row navoffset">
+       <div class="col-xs-12">
+         {{ gacs_dfdescription|safe }}
+       </div>
+     </div>
+     <div class="row navoffset">
+        <div class="col-xs-12">
+         {{ pandas_profiling|safe }}
+       </div>
+     </div>
+   </div>
+ </div>
+</div>
+
+{% endblock avi_content %}
