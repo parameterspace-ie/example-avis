@@ -19,7 +19,7 @@ class ModelAVIViewsTestcase(TestCase):
     """
     Testing the simple AVI views
 
-    @test: CU9-GAVIP-SYS-5-8
+    @test: CU9-GAVIP-SYS-5-8-UNIT
 
     @description
     In this test an the views created by a developer for an AVI are checked to see if they are working as expected.
@@ -109,7 +109,7 @@ class ModelAVIQueryViewsTestcase(TestCase):
     """
     Testing custom query for the simple AVI
 
-    @test: CU9-GAVIP-SYS-5-7
+    @test: CU9-GAVIP-SYS-5-7-UNIT
 
     @description
     In this test an AVI user supplies custom parameters to the AVI once it is deployed in GAVIP.
